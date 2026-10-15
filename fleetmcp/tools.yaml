@@ -14,6 +14,18 @@
 #
 # A tool's description is the protocol an agent reads before calling it. Say
 # what the app will refuse, and what to read first.
+#
+# trifecta — which legs of the "lethal trifecta" (private data + untrusted
+# content + a way out) each tool puts in the agent's context, classified by
+# reading the app handler behind the endpoint, not the description:
+#   private_data      — the response can carry the owner's non-public data
+#                       (chart, plans, journal, study record, process table).
+#   untrusted_content — the response can carry free text this call did not
+#                       supply: rows other sessions wrote, ingested documents,
+#                       vault notes, subprocess output.
+#   egress            — the handler itself can send data off the machine.
+#                       Loopback calls between the local apps are not egress.
+# trifecta_why is the one-line evidence; `python -m fleetmcp.trifecta` counts.
 
 apps:
   shipyard:
@@ -36,6 +48,8 @@ tools:
     method: GET
     path: /api/problems
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "every problem row: title, notes, description, anchor_basis, repo"
     description: >-
       Every problem on the chart, flat: id, title, waypoint, sounding, repo,
       anchored_at, parents. Find a problem's id here before any write. A
@@ -45,6 +59,8 @@ tools:
     method: GET
     path: /api/chart/{ref}
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "spine: node, parents, children as full rows"
     description: >-
       One problem's spine — the node with its parents and children, each with
       its effective sounding. `ref` is a problem id or a repo id.
@@ -53,12 +69,16 @@ tools:
     method: GET
     path: /api/chart/{ref}/tree
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "subtree rows"
     description: The whole subtree under a problem (or the repo's problem), nested.
   - name: shipyard_create_problem
     app: shipyard
     method: POST
     path: /api/problems
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the spine, which carries parent rows written earlier"
     description: >-
       Create a problem. It needs a waypoint (the observable that says it is
       moving) unless draft=true; a problem with no observable is a category and
@@ -69,12 +89,16 @@ tools:
     method: PATCH
     path: /api/problems/{pid}
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the spine"
     description: Edit title, waypoint, sounding, falsifier, reasoning, description or notes. Null fields are left alone.
   - name: shipyard_direction
     app: shipyard
     method: GET
     path: /api/direction
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "problem, bearing and occupant titles; gate reasons embed titles"
     description: >-
       Ask FIRST, before any work in a repo: what is this repo directed to do?
       Returns the problem that claims it, its bearing, whether it is the
@@ -90,6 +114,8 @@ tools:
     method: GET
     path: /api/focus
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "domain titles and full active problem rows"
     description: >-
       The focus slots: one active problem per pinned bearing, or none. "No
       active problem" under a bearing is a fact the human should know, not a
@@ -99,6 +125,8 @@ tools:
     method: PATCH
     path: /api/problems/{pid}/active
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the full problem row"
     description: >-
       Make a problem the active one for its bearing (or clear it). Refuses a
       blocked or done problem, and refuses a second active problem under the
@@ -109,6 +137,8 @@ tools:
     method: GET
     path: /api/yard
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "repo names, goal and parent titles, draft queue"
     description: >-
       The Yard board: bays (cleared to enter, owes work, uncharted, shelved),
       each repo's lamp, blockers (uncommitted, unpushed, untagged, uncharted,
@@ -118,18 +148,24 @@ tools:
     method: GET
     path: /api/projects
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "PROJECT.yaml manifests (paths, free text), changelog, documents"
     description: Every repo with a PROJECT.yaml, with version, chart node, cycles, documents and runtime.
   - name: shipyard_project
     app: shipyard
     method: GET
     path: /api/projects/{pid}
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "same project view as shipyard_projects"
     description: One project card — version {tag, ahead, dirty, unpushed}, waypoint, documents, decisions count.
   - name: shipyard_project_cycles
     app: shipyard
     method: GET
     path: /api/projects/{pid}/cycles
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "tags plus cycle-record titles read from files, records dir path"
     description: >-
       A repo's cycles: cut versions, `planned` (records with no tag = open
       cycles), the records dir. An untagged record is an open cycle and blocks
@@ -139,6 +175,8 @@ tools:
     method: POST
     path: /api/problems/{pid}/cycles/open
     kind: write
+    trifecta: {private_data: true, untrusted_content: false, egress: false}
+    trifecta_why: "returns record path/name, linked versions, repo; no free text"
     description: >-
       Open a PBTR cycle on a problem: scaffolds "vX.Y.Z — title.md" in the
       repo's docs/cycles and links the version. REFUSES a problem with no
@@ -150,12 +188,16 @@ tools:
     method: POST
     path: /api/problems/{pid}/cycles
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "returns {id, addressed_by: [versions]}"
     description: Link a version that was cut (git tag exists) to a problem without the open step. A cycle is named by the tag it cut.
   - name: shipyard_tick_phases
     app: shipyard
     method: PATCH
     path: /api/problems/{pid}/phases
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the full problem row"
     description: >-
       Tick plan / test / review on a problem. review REFUSES while the repo
       owes uncommitted or unpushed work — commit and push first. Unticking is
@@ -165,6 +207,8 @@ tools:
     method: POST
     path: /api/problems/{pid}/anchor
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the spine"
     description: >-
       Freeze a decision on a problem: basis (the decision, dated by the act)
       and an optional falsifier (what would thaw it). A gate is an anchor or it
@@ -174,12 +218,16 @@ tools:
     method: GET
     path: /api/problems/{pid}/impact
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "affected, surviving and orphaned rows, plus the token"
     description: What rests on an anchor — read before thawing, never after. Returns affected problems, projects, survivors and orphans, plus the token shipyard_thaw needs.
   - name: shipyard_thaw
     app: shipyard
     method: DELETE
     path: /api/problems/{pid}/anchor
     kind: destructive
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "returns the spine"
     description: >-
       Lift an anchor. Everything that rested on it is back in question. Requires
       impact_token from shipyard_anchor_impact; refused without it. Ask the
@@ -189,12 +237,16 @@ tools:
     method: GET
     path: /api/problems/{pid}/deletion
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "titles of children, new parents, spared rows; repo; token"
     description: What deleting a problem would do — children promoted or cascaded, freed repo — plus the token shipyard_delete_problem needs.
   - name: shipyard_delete_problem
     app: shipyard
     method: DELETE
     path: /api/problems/{pid}
     kind: destructive
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "titles of deleted, promoted and spared problems; freed repo"
     description: >-
       Delete a problem (cascade=true deletes the branch). Requires impact_token
       from shipyard_deletion_impact; refused without it. Ask the human first.
@@ -203,24 +255,32 @@ tools:
     method: GET
     path: /api/shelved
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "repos with the stored shelving note"
     description: Repos shelved off the board, with dated notes.
   - name: shipyard_shelve
     app: shipyard
     method: POST
     path: /api/shelved
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "echoes {repo, shelved: true}"
     description: Shelve a repo (reversible, touches no files). Refuses a repo with no PROJECT.yaml. Give a dated note.
   - name: shipyard_restore
     app: shipyard
     method: DELETE
     path: /api/shelved/{repo}
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "echoes {repo, shelved: false}"
     description: Put a shelved repo back on the board. Idempotent.
   - name: shipyard_sessions
     app: shipyard
     method: GET
     path: /api/sessions
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "session rows (cwd, repo, summary) and event detail text"
     description: >-
       The session ledger: what agent sessions did — commits, tags, pushes,
       anchors, cycles, phase ticks — newest first, optionally for one repo.
@@ -231,6 +291,8 @@ tools:
     method: GET
     path: /health
     kind: read
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "booleans and timestamps; pings MC on loopback"
     description: shipyard's health — ok covers only what it owns (db, code root); MC reachability is a check.
 
   # -------------------------------------------------------------------- helm
@@ -239,66 +301,88 @@ tools:
     method: GET
     path: /api/overview
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "daily note one_thing, habits, agenda titles, decision basis"
     description: What needs the human now — failing apps, due items, today's note, focus, at-risk streaks, recent decisions. One payload.
   - name: helm_agenda
     app: helm
     method: GET
     path: /api/agenda
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "vault course table and inbox note, learnhub, MC timers, shipyard focus"
     description: Every dated thing that is real, bucketed overdue/today/week/later/undated, from the systems that own them (courses, learnhub reviews, timers, chart focus, inbox). No date is typed here.
   - name: helm_dismiss
     app: helm
     method: POST
     path: /api/agenda/dismiss
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "local sqlite; echoes source and ref"
     description: Hide an agenda row (source + ref). The source system is never touched; helm_undismiss restores it.
   - name: helm_undismiss
     app: helm
     method: POST
     path: /api/agenda/undismiss
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "local sqlite; echoes source and ref"
     description: Restore a dismissed agenda row.
   - name: helm_decisions
     app: helm
     method: GET
     path: /api/decisions
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "shipyard problem titles and anchor_basis text"
     description: Every anchor on the chart, newest first, with basis and falsifier, plus the problems available to anchor.
   - name: helm_record_decision
     app: helm
     method: POST
     path: /api/decisions/{pid}
     kind: write
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "proxies shipyard anchor and returns its spine"
     description: Record a decision as an anchor on a chart problem (proxies shipyard). Use at the end of a session for any scope cut, "not before X" or "never Y".
   - name: helm_plan_week
     app: helm
     method: GET
     path: /api/plan/week
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "vault slot text, habits, stored placement titles, close notes"
     description: The week as fifteen boxes a day — what the note wrote (vault wins) and helm's placements, plus each day's close record.
   - name: helm_plan_day
     app: helm
     method: GET
     path: /api/plan/day/{day}
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "same merged day as helm_plan_week"
     description: One day's grid (YYYY-MM-DD).
   - name: helm_place
     app: helm
     method: POST
     path: /api/plan/placements
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "returns the inserted row: the call args plus ids and timestamps"
     description: Place an item into an empty slot (date, slot key, title, kind, ref, source). A slot the note already wrote is not a target (409).
   - name: helm_create_note
     app: helm
     method: POST
     path: /api/plan/note/{day}
     kind: write
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "vaultwriter returns only the new note path (from the date arg)"
     description: Create the day's note from the template via vaultwriter — new file only; refuses if any note for the date exists. The one vault write in the fleet.
   - name: helm_journal_today
     app: helm
     method: GET
     path: /api/journal/today
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "parsed daily note: slot text, habits, one_thing"
     description: Today's note as parsed — template shape, the one thing, habits, slots, loose ends.
 
   # --------------------------------------------------------- mission-control
@@ -307,54 +391,74 @@ tools:
     method: GET
     path: /api/apps
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "app registry, ports, pids; error field can hold docker compose stderr"
     description: Every registered app with live status (running/stopped/unhealthy/external), ports, pid, requirements and freshness.
   - name: mc_app_impact
     app: mission-control
     method: GET
     path: /api/apps/{app_id}/impact
     kind: read
+    trifecta: {private_data: true, untrusted_content: false, egress: false}
+    trifecta_why: "dependents and capabilities from the registry config, token"
     description: Blast radius of stopping an app (dependents, side-effect capabilities) and the start order for its prerequisites — plus the token mc_stop_app needs.
   - name: mc_start_app
     app: mission-control
     method: POST
     path: /api/apps/{app_id}/start
     kind: write
+    trifecta: {private_data: false, untrusted_content: true, egress: false}
+    trifecta_why: "ok, pid, steps; a failed step carries the start command output tail"
+    trifecta_note: "no egress from the handler, but it can start an app (or docker compose up) that does"
     description: Start an app (with_deps=true starts its prerequisites first). Refuses the dashboard itself and unknown ids.
   - name: mc_stop_app
     app: mission-control
     method: POST
     path: /api/apps/{app_id}/stop
     kind: destructive
+    trifecta: {private_data: false, untrusted_content: true, egress: false}
+    trifecta_why: "{ok: true}; a 409 carries the stop command output tail"
     description: Stop an app. Requires impact_token from mc_app_impact; refused without it. Stopping a seam (Ollama, vaultwriter) takes its dependents down.
   - name: mc_restart_app
     app: mission-control
     method: POST
     path: /api/apps/{app_id}/restart
     kind: write
+    trifecta: {private_data: false, untrusted_content: true, egress: false}
+    trifecta_why: "same error path as mc_start_app"
+    trifecta_note: "no egress from the handler, but it can start an app (or docker compose up) that does"
     description: Stop then start an app. Serialised per app.
   - name: mc_jobs
     app: mission-control
     method: GET
     path: /api/jobs
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "systemd timer names, results, free-text unit Description"
     description: systemd timers — schedule, last run, last result, next run.
   - name: mc_system
     app: mission-control
     method: GET
     path: /api/system
     kind: read
+    trifecta: {private_data: true, untrusted_content: false, egress: false}
+    trifecta_why: "cpu, memory, disk, load, gpu numbers only"
     description: Host stats — cpu, load, memory, gpu (util, temp, vram), disk.
   - name: mc_models
     app: mission-control
     method: GET
     path: /api/ollama
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "model names reported by local Ollama, httpx error text"
     description: Every Ollama daemon on the box with resident models, vram and on-disk models, over one unified memory pool.
   - name: mc_health
     app: mission-control
     method: GET
     path: /api/health
     kind: read
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "ok, boolean checks, freshness timestamps"
     description: Mission Control's health — ok covers the registry and pid dir; docker is a check.
 
   # ---------------------------------------------------------------- learnhub
@@ -363,28 +467,38 @@ tools:
     method: GET
     path: /api/documents
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "ingested course titles and source filenames"
     description: Ingested books/courses with page, section and concept counts.
   - name: learnhub_study_debt
     app: learnhub
     method: GET
     path: /api/study-debt
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "due counts per course with course title"
     description: Reviews due now, fading soon and tracked, per course.
   - name: learnhub_review_calendar
     app: learnhub
     method: GET
     path: /api/review-calendar
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "per-day items with headings and concept names from ingested text"
     description: FSRS review load per day for the next N days.
   - name: learnhub_mastery
     app: learnhub
     method: GET
     path: /api/mastery
     kind: read
+    trifecta: {private_data: true, untrusted_content: true, egress: false}
+    trifecta_why: "section labels from ingested book headings, retention"
     description: Mastery by section for one document (doc id).
   - name: learnhub_health
     app: learnhub
     method: GET
     path: /health
     kind: read
+    trifecta: {private_data: false, untrusted_content: false, egress: false}
+    trifecta_why: "postgres and ollama booleans, a freshness time"
     description: Learn Hub's health — ok is postgres only; Ollama is a check.
