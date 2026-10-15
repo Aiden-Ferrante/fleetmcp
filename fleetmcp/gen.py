@@ -12,7 +12,7 @@ fields are the apps' to change, and a generator re-run catches the change.
 
 The schema supplies: path params, query params (name, type, required, default),
 and the request body's fields via `$ref` into components.schemas. tools.yaml
-supplies the words. Destructive tools gain `impact_token: str` (cycle C), sent
+supplies the words. Destructive tools gain `impact_token: str`, sent
 as the app's own `?token=` query param (which is dropped from the signature).
 """
 from __future__ import annotations

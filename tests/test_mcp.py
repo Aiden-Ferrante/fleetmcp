@@ -138,3 +138,17 @@ def test_destructive_tools_take_one_token_and_send_it_once(stub):
         path_args = {p: "x" for p in params if p not in ("impact_token",) and params[p].default is inspect._empty}
         fn(**path_args, impact_token="tok-" + t["name"])
         assert seen[-1].url.params.get_list("token") == ["tok-" + t["name"]], t["name"]
+
+
+def test_the_session_file_is_optional(stub, monkeypatch, tmp_path):
+    """Outside a hooked Claude Code session there is no session file; calls still work."""
+    seen, _ = stub
+    monkeypatch.delenv("FLEETMCP_SESSION_FILE", raising=False)
+    monkeypatch.setenv("CLAUDE_PROJECT_DIR", str(tmp_path))
+    generated.shipyard_focus()
+    assert seen[0].headers["X-Actor"] == "claude-code:unknown"
+    f = tmp_path / "s.json"
+    f.write_text(json.dumps({"session_id": "xyz"}))
+    monkeypatch.setenv("FLEETMCP_SESSION_FILE", str(f))
+    generated.shipyard_focus()
+    assert seen[1].headers["X-Actor"] == "claude-code:xyz"

@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Own measurements: can a fresh Claude Code session work a PBTR cycle through the
-fleet MCP alone? (fleet v0.4.0, problem 99e27b007b45)
+fleet MCP alone?     BENCH_SHIPYARD=/path/to/shipyard .venv/bin/python bench/run.py --runs 3 --models default,haiku
 
-    .venv/bin/python bench/run.py --runs 3 --models default,haiku
+Needs a shipyard checkout (the app the tools drive; not part of this repo) with
+its backend venv at backend/.venv, and the Claude Code CLI (`claude` on PATH, or
+BENCH_CLAUDE / --claude). Without those it cannot run; bench/results/ holds the
+runs it produced.
 
-Per run: a scratch shipyard on :8847 (the agentics worktree, fresh sqlite, its own
-CODE_ROOT), a tmp git repo with a bare "origin", one problem with a waypoint, then
+Per run: a scratch shipyard on :8847 (fresh sqlite, its own CODE_ROOT), a tmp git repo with a bare "origin", one problem with a waypoint, then
 `claude -p` with a fixed task, the fleet MCP as the ONLY MCP server, and a tool
 allowlist. Scored by what is observable afterwards — a record in docs/cycles, a
 commit, a tag, the tag on origin, review ticked on the chart — plus refusals hit,
@@ -29,11 +31,11 @@ import time
 import urllib.request
 from pathlib import Path
 
-FLEET = Path(__file__).resolve().parents[1]
-WORKTREE = Path(os.environ.get("BENCH_SHIPYARD", Path.home() / "Desktop/code/shipyard/.claude/worktrees/agentics"))
+ROOT = Path(__file__).resolve().parents[1]
+WORKTREE = Path(os.environ.get("BENCH_SHIPYARD", ""))  # set by --shipyard too; required
 PORT = 8847
 BASE = f"http://localhost:{PORT}"
-CLAUDE = os.environ.get("BENCH_CLAUDE", str(Path.home() / ".local/bin/claude"))
+CLAUDE = os.environ.get("BENCH_CLAUDE") or shutil.which("claude") or "claude"
 
 TASK = """You are in a fleet repo. Use ONLY the fleet MCP tools (mcp__fleet__*) to talk to shipyard — never curl.
 1. Call shipyard_direction for repo "{repo}" and read what it says.
@@ -77,7 +79,9 @@ def make_repo(code_root: Path, rid: str) -> Path:
     (repo / "docs" / "cycles").mkdir(parents=True); (repo / "docs" / "cycles" / ".keep").write_text("")
     (repo / "Makefile").write_text("test:\n\t@true\n")
     # Registered like every real fleet repo — committed, so it is not "owed work" (v0.4.0 finding).
-    (repo / ".mcp.json").write_text(json.dumps({"mcpServers": {"fleet": {"type": "stdio", "command": str(FLEET / "run_mcp.sh")}}}))
+    (repo / ".mcp.json").write_text(json.dumps({"mcpServers": {"fleet": {
+        "type": "stdio", "command": sys.executable, "args": ["-m", "fleetmcp.server"],
+        "env": {"PYTHONPATH": str(ROOT), "FLEET_SHIPYARD_URL": BASE}}}}))
     bare = code_root / f"{rid}.git"; subprocess.run(["git", "init", "-q", "--bare", str(bare)], check=True)
     subprocess.run(["git", "-C", str(repo), "init", "-q", "-b", "main"], check=True)
     for k, v in (("user.email", "bench@fleet"), ("user.name", "bench")):
@@ -200,11 +204,18 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--runs", type=int, default=3); ap.add_argument("--models", default="default,haiku")
     ap.add_argument("--kinds", default="happy,refusal"); ap.add_argument("--timeout", type=int, default=600)
-    ap.add_argument("--out", default=str(FLEET / "bench" / "results" / f"{time.strftime('%Y-%m-%d')}.json"))
+    ap.add_argument("--out", default=str(ROOT / "bench" / "results" / f"{time.strftime('%Y-%m-%d')}.json"))
+    ap.add_argument("--shipyard", help="shipyard checkout to run (or BENCH_SHIPYARD)")
+    ap.add_argument("--claude", help="Claude Code CLI binary (or BENCH_CLAUDE; default: claude on PATH)")
     ap.add_argument("--rescore", help="re-parse the transcripts behind an existing results file")
     a = ap.parse_args()
     if a.rescore:
         rescore(Path(a.rescore)); return 0
+    global WORKTREE, CLAUDE
+    WORKTREE = Path(a.shipyard) if a.shipyard else WORKTREE
+    CLAUDE = a.claude or CLAUDE
+    if not str(WORKTREE) or str(WORKTREE) == "." or not (WORKTREE / "backend").is_dir():
+        raise SystemExit("set --shipyard or BENCH_SHIPYARD to a shipyard checkout (it has backend/)")
     rows = []
     for kind in a.kinds.split(","):
         for model in a.models.split(","):

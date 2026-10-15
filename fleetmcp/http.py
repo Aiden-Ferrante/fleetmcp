@@ -3,10 +3,12 @@
 Base URLs come from env (`FLEET_<APP>_URL`) with loopback defaults, because the
 server runs on the box beside the apps: helm's auth exempts genuine loopback,
 and shipyard, MC and learnhub bind loopback and have no auth. Every request
-carries `X-Actor`, so the apps that record actors (shipyard, cycle B) know it
-was an agent and which session — read from `.claude/fleet-session.json` under
-the project dir, written by the SessionStart hook; `claude-code:unknown` when
-that file is absent.
+carries `X-Actor`, so the apps that record actors (shipyard) know it was an
+agent and which session. The session id is optional: it is read from
+`$FLEETMCP_SESSION_FILE`, else `.claude/fleet-session.json` under
+`$CLAUDE_PROJECT_DIR` (or the cwd) — a JSON file `{"session_id": "..."}` that a
+Claude Code SessionStart hook can write. With no such file the actor is
+`claude-code:unknown` and everything else works the same.
 
 A non-2xx answer becomes a ToolError carrying the app's own `detail`: shipyard's
 gates and the impact-token refusals are written to name the missing fact, and
@@ -34,8 +36,11 @@ class ToolError(RuntimeError):
 
 def actor() -> str:
     """`claude-code:<session_id>` when a session file exists, else unknown."""
-    root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
-    f = Path(root) / ".claude" / "fleet-session.json"
+    f = os.environ.get("FLEETMCP_SESSION_FILE")
+    if not f:
+        root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
+        f = Path(root) / ".claude" / "fleet-session.json"
+    f = Path(f)
     try:
         sid = json.loads(f.read_text()).get("session_id")
         if sid:

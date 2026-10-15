@@ -9,8 +9,8 @@
 # kind: read        — no side effect (readOnlyHint)
 #       write       — changes state, reversible or additive
 #       destructive — irreversible or costly; takes `impact_token` from the read
-#                     named in the description (destructiveHint). Until cycle C
-#                     lands the token, the app ignores it.
+#                     named in the description (destructiveHint). The app, not
+#                     this server, refuses the call without a current token.
 #
 # A tool's description is the protocol an agent reads before calling it. Say
 # what the app will refuse, and what to read first.

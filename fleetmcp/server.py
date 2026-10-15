@@ -1,17 +1,16 @@
 """The fleet MCP server — one tool layer over shipyard, helm, Mission Control and
 Learn Hub.
 
-    fleet/run_mcp.sh                      # stdio, what .mcp.json launches
-    .venv/bin/python -m fleetmcp.server        # same
+    .venv/bin/python -m fleetmcp.server        # stdio; point .mcp.json at this
 
 Every tool is a generated function (fleetmcp/generated.py, from tools.yaml + the apps'
 OpenAPI). This module only registers them, with the annotations the kind
 implies: reads are read-only, destructive tools are marked destructive and take
-`impact_token` (cycle C). The words in each description are the protocol —
+`impact_token`. The words in each description are the protocol —
 what the app refuses and what to read first — because a refusal an agent cannot
 read is a wall, not a gate.
 
-Design rules (ADR 0001 in fleet/docs/adr): one server, not one per app, so a
+Design rules: one server, not one per app, so a
 session in any repo sees the whole fleet; generated not hand-written; curated
 not discovered; the server holds no state and makes no decision — it forwards,
 and the apps refuse.
