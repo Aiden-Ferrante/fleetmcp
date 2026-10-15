@@ -111,3 +111,30 @@ def test_call_tool_through_the_server_surfaces_the_refusal(stub):
     with pytest.raises(SdkToolError) as e:
         asyncio.run(mcp.call_tool("shipyard_tick_phases", {"pid": "p1", "review": True}))
     assert "review refused: helm owes uncommitted" in str(e.value)
+
+
+def test_no_generated_call_repeats_a_key():
+    """The v0.1 bug: destructive tools rendered params={'token': token, 'token': impact_token}.
+    Python keeps the last value, so one argument was silently dropped and no other test
+    noticed. Any dict literal in generated.py with a repeated key is that bug again."""
+    import ast
+    tree = ast.parse((ROOT / "fleetmcp" / "generated.py").read_text())
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Dict):
+            keys = [k.value for k in node.keys if isinstance(k, ast.Constant)]
+            assert len(keys) == len(set(keys)), f"line {node.lineno}: repeated key in {keys}"
+
+
+def test_destructive_tools_take_one_token_and_send_it_once(stub):
+    """impact_token is the only token argument, and it lands as the app's ?token=."""
+    import inspect
+    seen, _ = stub
+    for t in TOOLS:
+        if t["kind"] != "destructive":
+            continue
+        fn = getattr(generated, t["name"])
+        params = inspect.signature(fn).parameters
+        assert "token" not in params, t["name"]
+        path_args = {p: "x" for p in params if p not in ("impact_token",) and params[p].default is inspect._empty}
+        fn(**path_args, impact_token="tok-" + t["name"])
+        assert seen[-1].url.params.get_list("token") == ["tok-" + t["name"]], t["name"]
