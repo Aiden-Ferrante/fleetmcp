@@ -1,0 +1,3431 @@
+{
+ "components": {
+  "schemas": {
+   "ActiveIn": {
+    "properties": {
+     "active": {
+      "title": "Active",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "active"
+    ],
+    "title": "ActiveIn",
+    "type": "object"
+   },
+   "AnchorIn": {
+    "properties": {
+     "basis": {
+      "title": "Basis",
+      "type": "string"
+     },
+     "falsifier": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Falsifier"
+     },
+     "when": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "When"
+     }
+    },
+    "required": [
+     "basis"
+    ],
+    "title": "AnchorIn",
+    "type": "object"
+   },
+   "ApplyIn": {
+    "properties": {
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     }
+    },
+    "required": [
+     "slug"
+    ],
+    "title": "ApplyIn",
+    "type": "object"
+   },
+   "ApproachIn": {
+    "properties": {
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "rationale": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rationale"
+     }
+    },
+    "required": [
+     "name"
+    ],
+    "title": "ApproachIn",
+    "type": "object"
+   },
+   "ApproachPatch": {
+    "description": "`verdict` uses a sentinel rather than None-means-absent: clearing a verdict\nback to \"untested\" is a real edit, and None is the value that expresses it.",
+    "properties": {
+     "chosen": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Chosen"
+     },
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "rationale": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rationale"
+     },
+     "set_verdict": {
+      "default": false,
+      "title": "Set Verdict",
+      "type": "boolean"
+     },
+     "verdict": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Verdict"
+     }
+    },
+    "title": "ApproachPatch",
+    "type": "object"
+   },
+   "ArgumentIn": {
+    "properties": {
+     "body": {
+      "title": "Body",
+      "type": "string"
+     },
+     "mtime": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mtime"
+     }
+    },
+    "required": [
+     "body"
+    ],
+    "title": "ArgumentIn",
+    "type": "object"
+   },
+   "CarryIn": {
+    "properties": {
+     "note": {
+      "default": "",
+      "title": "Note",
+      "type": "string"
+     },
+     "repo": {
+      "title": "Repo",
+      "type": "string"
+     }
+    },
+    "required": [
+     "repo"
+    ],
+    "title": "CarryIn",
+    "type": "object"
+   },
+   "CycleLink": {
+    "properties": {
+     "version": {
+      "title": "Version",
+      "type": "string"
+     }
+    },
+    "required": [
+     "version"
+    ],
+    "title": "CycleLink",
+    "type": "object"
+   },
+   "CycleOpen": {
+    "properties": {
+     "repo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Repo"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     },
+     "version": {
+      "title": "Version",
+      "type": "string"
+     }
+    },
+    "required": [
+     "version",
+     "title"
+    ],
+    "title": "CycleOpen",
+    "type": "object"
+   },
+   "DuplicateIn": {
+    "properties": {
+     "parent_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parent Id"
+     }
+    },
+    "title": "DuplicateIn",
+    "type": "object"
+   },
+   "EdgeIn": {
+    "properties": {
+     "parent_id": {
+      "title": "Parent Id",
+      "type": "string"
+     }
+    },
+    "required": [
+     "parent_id"
+    ],
+    "title": "EdgeIn",
+    "type": "object"
+   },
+   "GroupBody": {
+    "properties": {
+     "bearing_ids": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Bearing Ids",
+      "type": "array"
+     },
+     "child_ids": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Child Ids",
+      "type": "array"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     },
+     "waypoint": {
+      "default": "",
+      "title": "Waypoint",
+      "type": "string"
+     }
+    },
+    "required": [
+     "title",
+     "bearing_ids",
+     "child_ids"
+    ],
+    "title": "GroupBody",
+    "type": "object"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "title": "Detail",
+      "type": "array"
+     }
+    },
+    "title": "HTTPValidationError",
+    "type": "object"
+   },
+   "ImportIn": {
+    "properties": {
+     "description": {
+      "default": "",
+      "title": "Description",
+      "type": "string"
+     },
+     "name": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Name"
+     },
+     "path": {
+      "title": "Path",
+      "type": "string"
+     }
+    },
+    "required": [
+     "path"
+    ],
+    "title": "ImportIn",
+    "type": "object"
+   },
+   "LinkIn": {
+    "properties": {
+     "repo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Repo"
+     }
+    },
+    "title": "LinkIn",
+    "type": "object"
+   },
+   "ParentIn": {
+    "properties": {
+     "parent_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parent Id"
+     }
+    },
+    "title": "ParentIn",
+    "type": "object"
+   },
+   "PhasesIn": {
+    "additionalProperties": false,
+    "description": "Only the manual phases. `build` is derived from commits and is not accepted \u2014\nthe chart layer rejects it rather than silently dropping it, because a dropped\ntick would look like the derived value disagreeing with the click.",
+    "properties": {
+     "plan": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Plan"
+     },
+     "review": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Review"
+     },
+     "test": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Test"
+     }
+    },
+    "title": "PhasesIn",
+    "type": "object"
+   },
+   "PinIn": {
+    "properties": {
+     "pinned": {
+      "title": "Pinned",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "pinned"
+    ],
+    "title": "PinIn",
+    "type": "object"
+   },
+   "ProblemIn": {
+    "properties": {
+     "anchor_basis": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Anchor Basis"
+     },
+     "anchored_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Anchored At"
+     },
+     "child_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Child Id"
+     },
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "draft": {
+      "default": false,
+      "title": "Draft",
+      "type": "boolean"
+     },
+     "falsifier": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Falsifier"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "parent_id": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Parent Id"
+     },
+     "repo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Repo"
+     },
+     "sounding": {
+      "default": "assumed",
+      "title": "Sounding",
+      "type": "string"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     },
+     "waypoint": {
+      "title": "Waypoint",
+      "type": "string"
+     }
+    },
+    "required": [
+     "title",
+     "waypoint"
+    ],
+    "title": "ProblemIn",
+    "type": "object"
+   },
+   "ProblemPatch": {
+    "properties": {
+     "description": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Description"
+     },
+     "falsifier": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Falsifier"
+     },
+     "notes": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Notes"
+     },
+     "reasoning": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reasoning"
+     },
+     "sounding": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Sounding"
+     },
+     "title": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Title"
+     },
+     "waypoint": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Waypoint"
+     }
+    },
+    "title": "ProblemPatch",
+    "type": "object"
+   },
+   "SessionEnd": {
+    "properties": {
+     "reason": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Reason"
+     },
+     "summary": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Summary"
+     }
+    },
+    "title": "SessionEnd",
+    "type": "object"
+   },
+   "SessionEvent": {
+    "properties": {
+     "cwd": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cwd"
+     },
+     "detail": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Detail"
+     },
+     "kind": {
+      "title": "Kind",
+      "type": "string"
+     },
+     "ref": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Ref"
+     },
+     "repo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Repo"
+     }
+    },
+    "required": [
+     "kind"
+    ],
+    "title": "SessionEvent",
+    "type": "object"
+   },
+   "SessionStart": {
+    "properties": {
+     "cwd": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Cwd"
+     },
+     "id": {
+      "title": "Id",
+      "type": "string"
+     },
+     "repo": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Repo"
+     },
+     "tool": {
+      "default": "claude-code",
+      "title": "Tool",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id"
+    ],
+    "title": "SessionStart",
+    "type": "object"
+   },
+   "ShelveIn": {
+    "properties": {
+     "note": {
+      "default": "",
+      "title": "Note",
+      "type": "string"
+     },
+     "repo": {
+      "title": "Repo",
+      "type": "string"
+     }
+    },
+    "required": [
+     "repo"
+    ],
+    "title": "ShelveIn",
+    "type": "object"
+   },
+   "SolvedIn": {
+    "properties": {
+     "solved": {
+      "title": "Solved",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "solved"
+    ],
+    "title": "SolvedIn",
+    "type": "object"
+   },
+   "TemplateIn": {
+    "properties": {
+     "description": {
+      "default": "",
+      "title": "Description",
+      "type": "string"
+     },
+     "document": {
+      "anyOf": [
+       {
+        "additionalProperties": true,
+        "type": "object"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Document"
+     },
+     "from_problem": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "From Problem"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "problems": {
+      "anyOf": [
+       {
+        "items": {},
+        "type": "array"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Problems"
+     }
+    },
+    "required": [
+     "name"
+    ],
+    "title": "TemplateIn",
+    "type": "object"
+   },
+   "ValidationError": {
+    "properties": {
+     "ctx": {
+      "title": "Context",
+      "type": "object"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "title": "Location",
+      "type": "array"
+     },
+     "msg": {
+      "title": "Message",
+      "type": "string"
+     },
+     "type": {
+      "title": "Error Type",
+      "type": "string"
+     }
+    },
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError",
+    "type": "object"
+   }
+  }
+ },
+ "info": {
+  "title": "shipyard",
+  "version": "0.1.0"
+ },
+ "openapi": "3.1.0",
+ "paths": {
+  "/": {
+   "get": {
+    "operationId": "index__get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Index"
+   },
+   "head": {
+    "operationId": "index__get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Index"
+   }
+  },
+  "/api/approaches/{aid}": {
+   "delete": {
+    "operationId": "api_delete_approach_api_approaches__aid__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "aid",
+      "required": true,
+      "schema": {
+       "title": "Aid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Approach"
+   },
+   "patch": {
+    "operationId": "api_update_approach_api_approaches__aid__patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "aid",
+      "required": true,
+      "schema": {
+       "title": "Aid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ApproachPatch"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Update Approach"
+   }
+  },
+  "/api/board": {
+   "get": {
+    "description": "The board, rendered from the chart.\n\nSections are root problems. Under each sits every problem in its subtree: those\nwith a repo are projects (full cards), those without are **ghosts** \u2014 decomposed\nbut not yet attacked, which is exactly the gap worth seeing.\n\nA project whose repo has no problem node lands in `uncharted`, and one no heading\nclaims lands in `ungrouped`. Nothing on disk is ever silently absent from this\nboard \u2014 the single exception is a **shelved** repo, and it is not silent: the\ncount rides on every response so the way back is always on screen.",
+    "operationId": "api_board_api_board_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Board"
+   }
+  },
+  "/api/carried": {
+   "post": {
+    "description": "Declare a repo as work you are carrying \u2014 the membership the ledger reads.\n\nValidated against disk for the same reason shelving is: a typo must not carry\nnothing and read as success. Carrying a shelved repo moves it rather than\nerroring \u2014 the table holds one state per repo, and saying \"I am working on this\nagain\" is a perfectly ordinary thing to do to something you had set down.",
+    "operationId": "api_carry_api_carried_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CarryIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Carry"
+   }
+  },
+  "/api/carried/{repo}": {
+   "delete": {
+    "description": "Stop carrying, without shelving. Idempotent and unvalidated, like `restore`:\nthe way back must work for a repo that has since moved away, or the row would be\nunremovable. Dropping the row is not the same as shelving \u2014 that would claim a\ndecision (\"I looked and set this down\") the caller never made.",
+    "operationId": "api_uncarry_api_carried__repo__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "repo",
+      "required": true,
+      "schema": {
+       "title": "Repo",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Uncarry"
+   }
+  },
+  "/api/chart-groupings": {
+   "get": {
+    "description": "Where the chart repeats a bearing set often enough that naming it would pay.",
+    "operationId": "api_groupings_api_chart_groupings_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Groupings"
+   },
+   "post": {
+    "operationId": "api_group_api_chart_groupings_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/GroupBody"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Group"
+   }
+  },
+  "/api/chart/{ref}": {
+   "get": {
+    "description": "Spine for one node. `ref` is a problem id or a project id.",
+    "operationId": "api_chart_api_chart__ref__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "ref",
+      "required": true,
+      "schema": {
+       "title": "Ref",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Chart"
+   }
+  },
+  "/api/chart/{ref}/tree": {
+   "get": {
+    "description": "One problem's subtree, flat and depth-tagged.\n\nThe same shape the goals outline renders, so a project draws its own chart with\nthe tree affordances that already work rather than inventing a second diagram.\nA project's master problem is the one its repo attacks; everything under it is\nlocal to that project, which is the asymmetry the vocabulary already names \u2014\nabove a project is shared, below is its own.",
+    "operationId": "api_chart_tree_api_chart__ref__tree_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "ref",
+      "required": true,
+      "schema": {
+       "title": "Ref",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Chart Tree"
+   }
+  },
+  "/api/conventions": {
+   "get": {
+    "description": "The conventions this fleet runs on, and which of them have teeth.\n\nReads no repo and scores nothing \u2014 see `standards.py` for why that boundary is\nthe whole design, and why `standards.yaml` being deleted in v0.5.0 does not\nmake this a revival of it.",
+    "operationId": "api_conventions_api_conventions_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Conventions"
+   }
+  },
+  "/api/direction": {
+   "get": {
+    "description": "What this repo is directed to do \u2014 and what would be refused if it tried.\n\nThe agent-facing question before any work: which problem claims the repo, which\nbearing that hangs from, whether it is the bearing's active problem, whether a\ncycle is already open, and what each gate would say. Composed here because it\njoins three domains \u2014 the chart names the problem, git and the records dir name\nwhat is in flight, the manifest names the repo \u2014 and no domain module imports\nanother. Reads the same `_open_gate_reason` / `_review_gate_reason` the write\nroutes raise, so \"would be refused\" and \"was refused\" cannot drift apart.\n\n`next` is one sentence a session can act on. \"clear\" means: open a cycle.\nUnknown repo \u2192 404 naming the manifest ids, so a typo cannot read as \"uncharted\".",
+    "operationId": "api_direction_api_direction_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "repo",
+      "required": true,
+      "schema": {
+       "title": "Repo",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Direction"
+   }
+  },
+  "/api/drift": {
+   "get": {
+    "description": "Drift = charted problems serving no bearing, plus projects with no chart at all.\n\nThe second half matters more: a repo that was never charted is the loudest\npossible case of \"nothing records why this exists\", and it is invisible to a\nquery that only looks inside the chart.",
+    "operationId": "api_drift_api_drift_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Drift"
+   }
+  },
+  "/api/focus": {
+   "get": {
+    "description": "The focus slots \u2014 one per pinned domain, and what is running in each.",
+    "operationId": "api_focus_api_focus_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Focus"
+   }
+  },
+  "/api/goals": {
+   "get": {
+    "description": "The goals page: the whole chart as an outline, plus how much draft debt it carries.",
+    "operationId": "api_goals_api_goals_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Goals"
+   }
+  },
+  "/api/graph": {
+   "get": {
+    "description": "The chart as nodes and edges \u2014 no duplication, no reference rows.\n\nThe outline has to render a two-parent node twice; a graph does not, which is\nthe whole reason this view exists. Layout is the client's problem.\n\n`root` scopes it to one problem's subtree, exactly as `root_id` does for\n`chart.outline` \u2014 so a project draws its own graph from the problem its repo\nattacks. It takes a problem id or a project id, the same as every other `ref`\non this API.\n\nEdges are filtered to pairs where BOTH ends are in scope. A descendant that\nalso serves a bearing outside the subtree keeps that edge in the unscoped\ngraph and loses it here, which is correct: an edge to a node that is not\ndrawn is a line to nowhere.",
+    "operationId": "api_graph_api_graph_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "root",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Root"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Graph"
+   }
+  },
+  "/api/importable": {
+   "get": {
+    "description": "Git repos on disk that shipyard cannot see, because they carry no manifest.\n\nReported, never adopted: which of nineteen repos is *relevant* is a judgment\nthe tool does not get to make.",
+    "operationId": "api_importable_api_importable_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Importable"
+   },
+   "post": {
+    "description": "Adopt one repo by writing a manifest into it.",
+    "operationId": "api_import_api_importable_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ImportIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Import"
+   }
+  },
+  "/api/memory": {
+   "get": {
+    "description": "What each project remembers about itself, and what it has never written down.\n\nFour kinds of durable memory, read where they already live \u2014 no new store, and\nnothing here is a shipyard convention:\n\n  why       a chart node. Recorded reasoning: the problem this repo attacks.\n  rules     a CHARTER: what is fenced off, and the order things get cut.\n  shape     ARCHITECTURE.md: boundaries, dependency direction, state ownership.\n  choices   ADRs: what was decided, and against what alternative.\n\nGrouped by what is MISSING rather than ranked by how complete a project is.\nA score would answer \"which repo is worst\"; the real question is \"what has this\nproject never written down\" \u2014 and the same guardrail that shaped Owed applies,\nsince Road to 1.0 prunes anything that scores a project.\n\nAbsence is not automatically debt. A three-file spike needs no charter, so this\nreports coverage and lets the reader judge; it does not nag.",
+    "operationId": "api_memory_api_memory_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Memory"
+   }
+  },
+  "/api/owed": {
+   "get": {
+    "description": "What the fleet owes, grouped by kind rather than ranked by project.\n\nEvery number here was already computed per project; the only thing that was\nmissing was somewhere to see all of them at once. Shipyard sat 48 commits\npast its own tag for five days with its own header reporting it, because\nreading that header meant opening the one page that shows it.\n\nBuilt on `project_view` rather than beside it, so the two surfaces cannot\ndisagree \u2014 and serially, like `/api/projects`, because the board already\npays exactly this cost for the same repos.",
+    "operationId": "api_owed_api_owed_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Owed"
+   }
+  },
+  "/api/problems": {
+   "get": {
+    "operationId": "api_problems_api_problems_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Problems"
+   },
+   "post": {
+    "operationId": "api_create_problem_api_problems_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ProblemIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Create Problem"
+   }
+  },
+  "/api/problems/{pid}": {
+   "delete": {
+    "description": "Delete one problem, or the whole branch it holds up.\n\nWithout cascade, children are promoted; with it, everything whose only route to\na bearing ran through this problem goes too. Anything with another parent is\nspared either way. Refused without the token `GET \u2026/deletion` issued for the\nimpact as it stands now \u2014 a deletion that did not read its consequences is\nthe failure this gate exists to make impossible (2026-09-04).",
+    "operationId": "api_delete_problem_api_problems__pid__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "cascade",
+      "required": false,
+      "schema": {
+       "default": false,
+       "title": "Cascade",
+       "type": "boolean"
+      }
+     },
+     {
+      "in": "query",
+      "name": "token",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Token"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Problem"
+   },
+   "patch": {
+    "operationId": "api_update_problem_api_problems__pid__patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ProblemPatch"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Update Problem"
+   }
+  },
+  "/api/problems/{pid}/active": {
+   "patch": {
+    "description": "Take or release a focus slot. Refuses a blocked problem, and refuses a second\none in a domain that already has one \u2014 naming the occupant so the message is\nsomething you can act on rather than a rule you have to remember.",
+    "operationId": "api_set_active_api_problems__pid__active_patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ActiveIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Set Active"
+   }
+  },
+  "/api/problems/{pid}/anchor": {
+   "delete": {
+    "description": "Lift an anchor. Refused without the token `GET \u2026/impact` issued \u2014 everything\nthat rests on the anchor is back in question, and the read is what you agree to.",
+    "operationId": "api_thaw_api_problems__pid__anchor_delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "token",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Token"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Thaw"
+   },
+   "post": {
+    "operationId": "api_freeze_api_problems__pid__anchor_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AnchorIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Freeze"
+   }
+  },
+  "/api/problems/{pid}/approaches": {
+   "post": {
+    "operationId": "api_add_approach_api_problems__pid__approaches_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ApproachIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Add Approach"
+   }
+  },
+  "/api/problems/{pid}/argument": {
+   "get": {
+    "operationId": "api_get_argument_api_problems__pid__argument_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Get Argument"
+   },
+   "post": {
+    "description": "Scaffold an essay whose thesis is the waypoint. Create-only.",
+    "operationId": "api_create_argument_api_problems__pid__argument_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Create Argument"
+   },
+   "put": {
+    "operationId": "api_write_argument_api_problems__pid__argument_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ArgumentIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Write Argument"
+   }
+  },
+  "/api/problems/{pid}/cycle-options": {
+   "get": {
+    "description": "Cycles this problem could be addressed by, and which are already linked.\n\nOffered from real tags rather than typed: `chart.address` validates the *shape*\nof a version, not that anything ever cut it, so a free-text field would happily\nrecord a phantom cycle that no repo can corroborate.",
+    "operationId": "api_cycle_options_api_problems__pid__cycle_options_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Cycle Options"
+   }
+  },
+  "/api/problems/{pid}/cycles": {
+   "post": {
+    "description": "Record that a cut cycle ran against this problem.\n\n\"Addressed by\", never \"solved by\": whether the work landed is what the sounding\nsays, so a problem with three cycles and an `assumed` sounding stays legible as\neffort spent with no evidence to show for it.",
+    "operationId": "api_address_api_problems__pid__cycles_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CycleLink"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Address"
+   }
+  },
+  "/api/problems/{pid}/cycles/open": {
+   "post": {
+    "description": "Start a PBTR cycle against this problem, before anything is cut.\n\nShipyard only ever learned about a cycle at the end, because a tag is the last\nevent in P\u2192B\u2192T\u2192R. This is the first: it writes the plan where Development\nProtocol 1.0 already puts cycle records \u2014 the vault \u2014 and links the problem to a\nversion that does not exist yet.\n\nNothing marks it done. A record with no tag is open, a record with a tag is\nclosed, and cutting the tag is what moves it: the state is read off disk rather\nthan typed into.",
+    "operationId": "api_open_cycle_api_problems__pid__cycles_open_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/CycleOpen"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Open Cycle"
+   }
+  },
+  "/api/problems/{pid}/cycles/{version}": {
+   "delete": {
+    "operationId": "api_unaddress_api_problems__pid__cycles__version__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "version",
+      "required": true,
+      "schema": {
+       "title": "Version",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Unaddress"
+   }
+  },
+  "/api/problems/{pid}/deletion": {
+   "get": {
+    "description": "What deleting would do. Read before the button, never after \u2014 and since\nv0.35.0, the button needs the `token` this returns (tokens.py).",
+    "operationId": "api_deletion_impact_api_problems__pid__deletion_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Deletion Impact"
+   }
+  },
+  "/api/problems/{pid}/duplicate": {
+   "post": {
+    "description": "Copy a subtree as independent nodes \u2014 the opposite of sharing it.",
+    "operationId": "api_duplicate_api_problems__pid__duplicate_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/DuplicateIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Duplicate"
+   }
+  },
+  "/api/problems/{pid}/impact": {
+   "get": {
+    "description": "What rests on this \u2014 read before thawing, never after; thaw needs the `token`.",
+    "operationId": "api_impact_api_problems__pid__impact_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Impact"
+   }
+  },
+  "/api/problems/{pid}/parent": {
+   "put": {
+    "description": "Drag a card to another section: what this work is *for* changes.",
+    "operationId": "api_set_parent_api_problems__pid__parent_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ParentIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Set Parent"
+   }
+  },
+  "/api/problems/{pid}/parents": {
+   "post": {
+    "description": "Attach an existing bearing \u2014 how a project gains a second parent.",
+    "operationId": "api_attach_parent_api_problems__pid__parents_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EdgeIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Attach Parent"
+   }
+  },
+  "/api/problems/{pid}/parents/{parent_id}": {
+   "delete": {
+    "description": "Detach one bearing while keeping the others.",
+    "operationId": "api_remove_parent_api_problems__pid__parents__parent_id__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     },
+     {
+      "in": "path",
+      "name": "parent_id",
+      "required": true,
+      "schema": {
+       "title": "Parent Id",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Remove Parent"
+   }
+  },
+  "/api/problems/{pid}/phases": {
+   "patch": {
+    "operationId": "api_set_phases_api_problems__pid__phases_patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PhasesIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Set Phases"
+   }
+  },
+  "/api/problems/{pid}/pin": {
+   "put": {
+    "description": "Make a goal a board heading, or stop it being one. Structure is untouched.",
+    "operationId": "api_pin_api_problems__pid__pin_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PinIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Pin"
+   }
+  },
+  "/api/problems/{pid}/repo": {
+   "put": {
+    "description": "Promote a problem to a project \u2014 the moment reasoning becomes work.",
+    "operationId": "api_link_repo_api_problems__pid__repo_put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LinkIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Link Repo"
+   }
+  },
+  "/api/problems/{pid}/solved": {
+   "patch": {
+    "operationId": "api_set_solved_api_problems__pid__solved_patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SolvedIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Set Solved"
+   }
+  },
+  "/api/problems/{pid}/template": {
+   "post": {
+    "description": "Stamp a template under a problem. Nothing is linked afterwards \u2014 the copy is\nyours, and shipyard will never tell you it has drifted from its template.",
+    "operationId": "api_apply_template_api_problems__pid__template_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ApplyIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Apply Template"
+   }
+  },
+  "/api/projects": {
+   "get": {
+    "description": "Every repo on disk \u2014 shelved ones included, and flagged rather than dropped.\n\nShelving is a decision about the *board*. Fleet is the page that catches a repo\nwith unpushed work rotting for a month, and letting one opt out of that would\nturn a view preference into a way to stop being told. So it is marked here, not\nhidden: a project absent from the board but present in Fleet is explained on\nsight instead of reading as a bug.",
+    "operationId": "api_projects_api_projects_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Projects"
+   }
+  },
+  "/api/projects/{pid}": {
+   "get": {
+    "operationId": "api_project_api_projects__pid__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Project"
+   }
+  },
+  "/api/projects/{pid}/activity": {
+   "get": {
+    "operationId": "api_activity_api_projects__pid__activity_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Activity"
+   }
+  },
+  "/api/projects/{pid}/cycles": {
+   "get": {
+    "description": "Every cut version as a plan-build-test-review cycle.\n\nThe tags already are the history \u2014 \"the git tags are the only durable record of\nfinished work\" \u2014 so this joins them to what each produced and what was learned.",
+    "operationId": "api_cycles_api_projects__pid__cycles_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Cycles"
+   }
+  },
+  "/api/projects/{pid}/cycles/mirror": {
+   "post": {
+    "description": "Copy the vault's cycle records into the repo.\n\nExplicit rather than a side effect of reading: a GET that writes files is the\nkind of hidden behaviour this app exists to argue against.",
+    "operationId": "api_mirror_cycles_api_projects__pid__cycles_mirror_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Mirror Cycles"
+   }
+  },
+  "/api/projects/{pid}/decisions": {
+   "get": {
+    "description": "The ADRs this repo keeps. Empty is a normal answer, not an error.",
+    "operationId": "api_decisions_api_projects__pid__decisions_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Decisions"
+   }
+  },
+  "/api/projects/{pid}/doc": {
+   "get": {
+    "description": "Read one document out of a project, for the in-app reader.\n\nA repo-relative path off the query string is untrusted input; `repo.read_document`\nresolves it and refuses anything landing outside the project.",
+    "operationId": "api_document_api_projects__pid__doc_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "path",
+      "required": true,
+      "schema": {
+       "title": "Path",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Document"
+   }
+  },
+  "/api/projects/{pid}/recent": {
+   "get": {
+    "description": "Commits since the last release and the state of the working tree.",
+    "operationId": "api_recent_api_projects__pid__recent_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Recent"
+   }
+  },
+  "/api/projects/{pid}/survey": {
+   "get": {
+    "description": "What the code shows about itself: shape, layout, how to start it, what it\nleans on. Derived, so it is never empty for a repo that exists.",
+    "operationId": "api_survey_api_projects__pid__survey_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "pid",
+      "required": true,
+      "schema": {
+       "title": "Pid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Survey"
+   }
+  },
+  "/api/sessions": {
+   "get": {
+    "description": "Sessions newest first, each with its events. `repo` and `since` (ISO) filter.",
+    "operationId": "api_sessions_api_sessions_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "repo",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Repo"
+      }
+     },
+     {
+      "in": "query",
+      "name": "since",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Since"
+      }
+     },
+     {
+      "in": "query",
+      "name": "limit",
+      "required": false,
+      "schema": {
+       "default": 50,
+       "title": "Limit",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Sessions"
+   },
+   "post": {
+    "description": "A session opened (Claude Code's SessionStart hook). Upsert by id.",
+    "operationId": "api_session_start_api_sessions_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SessionStart"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Session Start"
+   }
+  },
+  "/api/sessions/{sid}": {
+   "get": {
+    "operationId": "api_session_api_sessions__sid__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "sid",
+      "required": true,
+      "schema": {
+       "title": "Sid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Session"
+   },
+   "patch": {
+    "description": "A session closed (SessionEnd hook): the reason, and a summary if any.",
+    "operationId": "api_session_end_api_sessions__sid__patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "sid",
+      "required": true,
+      "schema": {
+       "title": "Sid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SessionEnd"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Session End"
+   }
+  },
+  "/api/sessions/{sid}/events": {
+   "post": {
+    "description": "Something the session did outside the chart \u2014 a commit, a tag, a push \u2014\nposted by the PostToolUse hook. Chart writes record themselves.",
+    "operationId": "api_session_event_api_sessions__sid__events_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "sid",
+      "required": true,
+      "schema": {
+       "title": "Sid",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SessionEvent"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Session Event"
+   }
+  },
+  "/api/shelved": {
+   "get": {
+    "operationId": "api_shelved_api_shelved_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Shelved"
+   },
+   "post": {
+    "description": "Take a project off the board without touching a single file.\n\nRefuses a repo it cannot see, so a typo cannot shelve nothing and read as\nsuccess \u2014 and so the restore list can never fill with names that mean nothing.",
+    "operationId": "api_shelve_api_shelved_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ShelveIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Shelve"
+   }
+  },
+  "/api/shelved/{repo}": {
+   "delete": {
+    "description": "Put it back. Deliberately idempotent and deliberately not validated against\ndisk: the way back must work even for a repo that has since been moved away,\nor the row would be unremovable.",
+    "operationId": "api_restore_api_shelved__repo__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "repo",
+      "required": true,
+      "schema": {
+       "title": "Repo",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Restore"
+   }
+  },
+  "/api/templates": {
+   "get": {
+    "operationId": "api_templates_api_templates_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Templates"
+   },
+   "post": {
+    "description": "Save a shape \u2014 usually one lifted straight off a subtree you already built.",
+    "operationId": "api_save_template_api_templates_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/TemplateIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Save Template"
+   }
+  },
+  "/api/templates/{slug}": {
+   "delete": {
+    "operationId": "api_delete_template_api_templates__slug__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "slug",
+      "required": true,
+      "schema": {
+       "title": "Slug",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Template"
+   },
+   "get": {
+    "operationId": "api_template_api_templates__slug__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "slug",
+      "required": true,
+      "schema": {
+       "title": "Slug",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Template"
+   }
+  },
+  "/api/unlinked": {
+   "get": {
+    "description": "Repos not yet attached to any problem \u2014 the promote picker's options.",
+    "operationId": "api_unlinked_api_unlinked_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Unlinked"
+   }
+  },
+  "/api/yard": {
+   "get": {
+    "description": "The yard \u2014 everything not on the line, grouped by what blocks entry (D5).\n\nFleet's four groupings collapsed into one question with named answers. A repo\nappears under the reason it cannot start, and appears once; within a bay the\norder is the roster's id order \u2014 admission, never merit (guardrail 2: this\npage never ranks repos). Empty bays are omitted: nothing renders empty\nscaffolding.\n\nComposed here from reads that already exist \u2014 `project_view` for the facts,\n`repo.owed` re-read as an intake predicate (D3, same computation, new\nsentence), the chart for why/goal/manned, shelved for the one deliberate\nhide. No new module, no new storage, and it rides the same cached scan and\ngit facts the rest of the Fleet load pays for once.\n\nShelved strips keep their REAL owed blockers: the bay says \"deliberately out\nof service\", and hiding the debt too would let the inspector overstate how\nclean the shelf is.",
+    "operationId": "api_yard_api_yard_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Yard"
+   }
+  },
+  "/health": {
+   "get": {
+    "operationId": "health_health_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Health"
+   }
+  }
+ }
+}

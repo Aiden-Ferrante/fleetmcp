@@ -1,0 +1,390 @@
+# The fleet's tool layer, curated. One entry per tool the fleet MCP exposes.
+#
+# The generator (gen.py) reads each app's OpenAPI schema from fixtures/<app>.json
+# for parameter names, types and body fields, and takes the WORDS from here: no
+# fleet app tags or names its operations, Mission Control has no request models
+# and learnhub's api layer uses untyped bodies, so the schema alone cannot say
+# what a tool is for or what it refuses. This file can.
+#
+# kind: read        — no side effect (readOnlyHint)
+#       write       — changes state, reversible or additive
+#       destructive — irreversible or costly; takes `impact_token` from the read
+#                     named in the description (destructiveHint). Until cycle C
+#                     lands the token, the app ignores it.
+#
+# A tool's description is the protocol an agent reads before calling it. Say
+# what the app will refuse, and what to read first.
+
+apps:
+  shipyard:
+    url_env: FLEET_SHIPYARD_URL
+    default: http://localhost:8845
+  helm:
+    url_env: FLEET_HELM_URL
+    default: http://localhost:8990
+  mission-control:
+    url_env: FLEET_MC_URL
+    default: http://localhost:9090
+  learnhub:
+    url_env: FLEET_LEARNHUB_URL
+    default: http://localhost:8010
+
+tools:
+  # ---------------------------------------------------------------- shipyard
+  - name: shipyard_problems
+    app: shipyard
+    method: GET
+    path: /api/problems
+    kind: read
+    description: >-
+      Every problem on the chart, flat: id, title, waypoint, sounding, repo,
+      anchored_at, parents. Find a problem's id here before any write. A
+      project is a problem with a repo attached.
+  - name: shipyard_problem
+    app: shipyard
+    method: GET
+    path: /api/chart/{ref}
+    kind: read
+    description: >-
+      One problem's spine — the node with its parents and children, each with
+      its effective sounding. `ref` is a problem id or a repo id.
+  - name: shipyard_problem_tree
+    app: shipyard
+    method: GET
+    path: /api/chart/{ref}/tree
+    kind: read
+    description: The whole subtree under a problem (or the repo's problem), nested.
+  - name: shipyard_create_problem
+    app: shipyard
+    method: POST
+    path: /api/problems
+    kind: write
+    description: >-
+      Create a problem. It needs a waypoint (the observable that says it is
+      moving) unless draft=true; a problem with no observable is a category and
+      no cycle can open on it. Give parent_id to hang it under a bearing and
+      repo to attach a checkout (one repo, one problem). Returns id and spine.
+  - name: shipyard_update_problem
+    app: shipyard
+    method: PATCH
+    path: /api/problems/{pid}
+    kind: write
+    description: Edit title, waypoint, sounding, falsifier, reasoning, description or notes. Null fields are left alone.
+  - name: shipyard_direction
+    app: shipyard
+    method: GET
+    path: /api/direction
+    kind: read
+    description: >-
+      Ask FIRST, before any work in a repo: what is this repo directed to do?
+      Returns the problem that claims it, its bearing, whether it is the
+      bearing's active problem (and who is, if not), any cycle already open,
+      what `open` and `review` WOULD refuse today (computed by the gates
+      themselves), and one `next` sentence. would_refuse names only the NEXT
+      step's gate (open when no cycle is open, review when one is; shipyard
+      v0.36.0) — both gates are always under `gates`. If would_refuse is non-empty or next
+      is not "clear", stop and tell the human — do not route around it.
+      `repo` is the PROJECT.yaml id (e.g. helm, shipyard, learn-hub).
+  - name: shipyard_focus
+    app: shipyard
+    method: GET
+    path: /api/focus
+    kind: read
+    description: >-
+      The focus slots: one active problem per pinned bearing, or none. "No
+      active problem" under a bearing is a fact the human should know, not a
+      gap to fill silently.
+  - name: shipyard_set_active
+    app: shipyard
+    method: PATCH
+    path: /api/problems/{pid}/active
+    kind: write
+    description: >-
+      Make a problem the active one for its bearing (or clear it). Refuses a
+      blocked or done problem, and refuses a second active problem under the
+      same bearing, naming the occupant. This is the human's decision to
+      request, not the agent's to make.
+  - name: shipyard_yard
+    app: shipyard
+    method: GET
+    path: /api/yard
+    kind: read
+    description: >-
+      The Yard board: bays (cleared to enter, owes work, uncharted, shelved),
+      each repo's lamp, blockers (uncommitted, unpushed, untagged, uncharted,
+      no-remote, running-old-code) and open cycles.
+  - name: shipyard_projects
+    app: shipyard
+    method: GET
+    path: /api/projects
+    kind: read
+    description: Every repo with a PROJECT.yaml, with version, chart node, cycles, documents and runtime.
+  - name: shipyard_project
+    app: shipyard
+    method: GET
+    path: /api/projects/{pid}
+    kind: read
+    description: One project card — version {tag, ahead, dirty, unpushed}, waypoint, documents, decisions count.
+  - name: shipyard_project_cycles
+    app: shipyard
+    method: GET
+    path: /api/projects/{pid}/cycles
+    kind: read
+    description: >-
+      A repo's cycles: cut versions, `planned` (records with no tag = open
+      cycles), the records dir. An untagged record is an open cycle and blocks
+      opening another on the same repo.
+  - name: shipyard_open_cycle
+    app: shipyard
+    method: POST
+    path: /api/problems/{pid}/cycles/open
+    kind: write
+    description: >-
+      Open a PBTR cycle on a problem: scaffolds "vX.Y.Z — title.md" in the
+      repo's docs/cycles and links the version. REFUSES a problem with no
+      waypoint, and a repo that already has an untagged record (a problem with
+      children composes and is exempt). The refusal names the fact; fix it, do
+      not route around it. version like "v0.4.0".
+  - name: shipyard_link_cycle
+    app: shipyard
+    method: POST
+    path: /api/problems/{pid}/cycles
+    kind: write
+    description: Link a version that was cut (git tag exists) to a problem without the open step. A cycle is named by the tag it cut.
+  - name: shipyard_tick_phases
+    app: shipyard
+    method: PATCH
+    path: /api/problems/{pid}/phases
+    kind: write
+    description: >-
+      Tick plan / test / review on a problem. review REFUSES while the repo
+      owes uncommitted or unpushed work — commit and push first. Unticking is
+      always allowed.
+  - name: shipyard_anchor
+    app: shipyard
+    method: POST
+    path: /api/problems/{pid}/anchor
+    kind: write
+    description: >-
+      Freeze a decision on a problem: basis (the decision, dated by the act)
+      and an optional falsifier (what would thaw it). A gate is an anchor or it
+      does not exist — record decisions here, never in a plan file or memory.
+  - name: shipyard_anchor_impact
+    app: shipyard
+    method: GET
+    path: /api/problems/{pid}/impact
+    kind: read
+    description: What rests on an anchor — read before thawing, never after. Returns affected problems, projects, survivors and orphans, plus the token shipyard_thaw needs.
+  - name: shipyard_thaw
+    app: shipyard
+    method: DELETE
+    path: /api/problems/{pid}/anchor
+    kind: destructive
+    description: >-
+      Lift an anchor. Everything that rested on it is back in question. Requires
+      impact_token from shipyard_anchor_impact; refused without it. Ask the
+      human before calling this.
+  - name: shipyard_deletion_impact
+    app: shipyard
+    method: GET
+    path: /api/problems/{pid}/deletion
+    kind: read
+    description: What deleting a problem would do — children promoted or cascaded, freed repo — plus the token shipyard_delete_problem needs.
+  - name: shipyard_delete_problem
+    app: shipyard
+    method: DELETE
+    path: /api/problems/{pid}
+    kind: destructive
+    description: >-
+      Delete a problem (cascade=true deletes the branch). Requires impact_token
+      from shipyard_deletion_impact; refused without it. Ask the human first.
+  - name: shipyard_shelved
+    app: shipyard
+    method: GET
+    path: /api/shelved
+    kind: read
+    description: Repos shelved off the board, with dated notes.
+  - name: shipyard_shelve
+    app: shipyard
+    method: POST
+    path: /api/shelved
+    kind: write
+    description: Shelve a repo (reversible, touches no files). Refuses a repo with no PROJECT.yaml. Give a dated note.
+  - name: shipyard_restore
+    app: shipyard
+    method: DELETE
+    path: /api/shelved/{repo}
+    kind: write
+    description: Put a shelved repo back on the board. Idempotent.
+  - name: shipyard_sessions
+    app: shipyard
+    method: GET
+    path: /api/sessions
+    kind: read
+    description: >-
+      The session ledger: what agent sessions did — commits, tags, pushes,
+      anchors, cycles, phase ticks — newest first, optionally for one repo.
+      Read this to see what happened while the human was away; your own
+      session's chart writes land here through the X-Actor header.
+  - name: shipyard_health
+    app: shipyard
+    method: GET
+    path: /health
+    kind: read
+    description: shipyard's health — ok covers only what it owns (db, code root); MC reachability is a check.
+
+  # -------------------------------------------------------------------- helm
+  - name: helm_overview
+    app: helm
+    method: GET
+    path: /api/overview
+    kind: read
+    description: What needs the human now — failing apps, due items, today's note, focus, at-risk streaks, recent decisions. One payload.
+  - name: helm_agenda
+    app: helm
+    method: GET
+    path: /api/agenda
+    kind: read
+    description: Every dated thing that is real, bucketed overdue/today/week/later/undated, from the systems that own them (courses, learnhub reviews, timers, chart focus, inbox). No date is typed here.
+  - name: helm_dismiss
+    app: helm
+    method: POST
+    path: /api/agenda/dismiss
+    kind: write
+    description: Hide an agenda row (source + ref). The source system is never touched; helm_undismiss restores it.
+  - name: helm_undismiss
+    app: helm
+    method: POST
+    path: /api/agenda/undismiss
+    kind: write
+    description: Restore a dismissed agenda row.
+  - name: helm_decisions
+    app: helm
+    method: GET
+    path: /api/decisions
+    kind: read
+    description: Every anchor on the chart, newest first, with basis and falsifier, plus the problems available to anchor.
+  - name: helm_record_decision
+    app: helm
+    method: POST
+    path: /api/decisions/{pid}
+    kind: write
+    description: Record a decision as an anchor on a chart problem (proxies shipyard). Use at the end of a session for any scope cut, "not before X" or "never Y".
+  - name: helm_plan_week
+    app: helm
+    method: GET
+    path: /api/plan/week
+    kind: read
+    description: The week as fifteen boxes a day — what the note wrote (vault wins) and helm's placements, plus each day's close record.
+  - name: helm_plan_day
+    app: helm
+    method: GET
+    path: /api/plan/day/{day}
+    kind: read
+    description: One day's grid (YYYY-MM-DD).
+  - name: helm_place
+    app: helm
+    method: POST
+    path: /api/plan/placements
+    kind: write
+    description: Place an item into an empty slot (date, slot key, title, kind, ref, source). A slot the note already wrote is not a target (409).
+  - name: helm_create_note
+    app: helm
+    method: POST
+    path: /api/plan/note/{day}
+    kind: write
+    description: Create the day's note from the template via vaultwriter — new file only; refuses if any note for the date exists. The one vault write in the fleet.
+  - name: helm_journal_today
+    app: helm
+    method: GET
+    path: /api/journal/today
+    kind: read
+    description: Today's note as parsed — template shape, the one thing, habits, slots, loose ends.
+
+  # --------------------------------------------------------- mission-control
+  - name: mc_apps
+    app: mission-control
+    method: GET
+    path: /api/apps
+    kind: read
+    description: Every registered app with live status (running/stopped/unhealthy/external), ports, pid, requirements and freshness.
+  - name: mc_app_impact
+    app: mission-control
+    method: GET
+    path: /api/apps/{app_id}/impact
+    kind: read
+    description: Blast radius of stopping an app (dependents, side-effect capabilities) and the start order for its prerequisites — plus the token mc_stop_app needs.
+  - name: mc_start_app
+    app: mission-control
+    method: POST
+    path: /api/apps/{app_id}/start
+    kind: write
+    description: Start an app (with_deps=true starts its prerequisites first). Refuses the dashboard itself and unknown ids.
+  - name: mc_stop_app
+    app: mission-control
+    method: POST
+    path: /api/apps/{app_id}/stop
+    kind: destructive
+    description: Stop an app. Requires impact_token from mc_app_impact; refused without it. Stopping a seam (Ollama, vaultwriter) takes its dependents down.
+  - name: mc_restart_app
+    app: mission-control
+    method: POST
+    path: /api/apps/{app_id}/restart
+    kind: write
+    description: Stop then start an app. Serialised per app.
+  - name: mc_jobs
+    app: mission-control
+    method: GET
+    path: /api/jobs
+    kind: read
+    description: systemd timers — schedule, last run, last result, next run.
+  - name: mc_system
+    app: mission-control
+    method: GET
+    path: /api/system
+    kind: read
+    description: Host stats — cpu, load, memory, gpu (util, temp, vram), disk.
+  - name: mc_models
+    app: mission-control
+    method: GET
+    path: /api/ollama
+    kind: read
+    description: Every Ollama daemon on the box with resident models, vram and on-disk models, over one unified memory pool.
+  - name: mc_health
+    app: mission-control
+    method: GET
+    path: /api/health
+    kind: read
+    description: Mission Control's health — ok covers the registry and pid dir; docker is a check.
+
+  # ---------------------------------------------------------------- learnhub
+  - name: learnhub_documents
+    app: learnhub
+    method: GET
+    path: /api/documents
+    kind: read
+    description: Ingested books/courses with page, section and concept counts.
+  - name: learnhub_study_debt
+    app: learnhub
+    method: GET
+    path: /api/study-debt
+    kind: read
+    description: Reviews due now, fading soon and tracked, per course.
+  - name: learnhub_review_calendar
+    app: learnhub
+    method: GET
+    path: /api/review-calendar
+    kind: read
+    description: FSRS review load per day for the next N days.
+  - name: learnhub_mastery
+    app: learnhub
+    method: GET
+    path: /api/mastery
+    kind: read
+    description: Mastery by section for one document (doc id).
+  - name: learnhub_health
+    app: learnhub
+    method: GET
+    path: /health
+    kind: read
+    description: Learn Hub's health — ok is postgres only; Ollama is a check.

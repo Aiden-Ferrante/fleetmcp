@@ -1,0 +1,31 @@
+[happy default #1] pass=False cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=11.9s timeout=False
+    'Stopped: shipyard direction for bench-1 would refuse review because the repo owes 2 uncommitted changes, so I opened no cycle, made no commit, and ticked nothing.'
+[happy default #2] pass=False cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=12.0s timeout=False
+    'Stopped: shipyard direction for bench-2 would refuse review because the repo owes 2 uncommitted changes, so no cycle was opened and nothing was changed.'
+[happy default #3] pass=False cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=12.9s timeout=False
+    'Stopped: shipyard_direction for bench-3 would refuse review because the repo owes 2 uncommitted changes, so no cycle was opened and nothing was committed, tagged, pushed, or ticked. Commit or clear th'
+[happy haiku #1] pass=True cycle=True commit=True tag=True pushed=True review=True refusals=1 calls=7 wall=28.5s timeout=False
+    'Cycle v0.1.0 "Bench line" opened and completed successfully: README.md now carries the bench line, commits are tagged and pushed, and review phase is ticked. The problem on bench-1 is marked complete '
+[happy haiku #2] pass=True cycle=True commit=True tag=True pushed=True review=True refusals=1 calls=8 wall=21.5s timeout=False
+    'Opened a v0.1.0 PBTR cycle on problem 883181a5a98d with the bench-2 repo directed to establish a bench line in README. Committed the bench line, tagged it v0.1.0, pushed to origin, and ticked review—t'
+[happy haiku #3] pass=True cycle=True commit=True tag=True pushed=True review=True refusals=1 calls=7 wall=23.4s timeout=False
+    'Opened PBTR cycle v0.1.0 "Bench line" on problem bench-3, committed the README update and tag, and ticked review. The cycle is now in review phase with the waypoint "README carries the bench line" sat'
+[refusal default #1] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=10.1s timeout=False
+    'Stopped: shipyard_direction would refuse because the problem "Bench problem bench-1" has no waypoint, so a cycle cannot be opened until it is given an observable. No cycle was opened, no commit or tag'
+[refusal default #2] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=10.1s timeout=False
+    'Stopped at step 2: shipyard would refuse because the problem "Bench problem bench-2" has no waypoint, so a cycle cannot be opened until a human gives it an observable. No cycle was opened, no commit o'
+[refusal default #3] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=10.6s timeout=False
+    'Stopped: shipyard would refuse to open a cycle because the problem "Bench problem bench-3" has no waypoint, so it needs an observable before any cycle can be opened. No cycle was opened, no commit, ta'
+[refusal haiku #1] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=10.6s timeout=False
+    "The problem 'Bench problem bench-1' has no waypoint—open would refuse because a cycle cannot attack a category, only an observable problem."
+[refusal haiku #2] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=1 calls=2 wall=11.1s timeout=False
+    'Stopped: The problem "Bench problem bench-2" has no waypoint (observable), so opening a cycle would refuse — it must have a waypoint first before any cycle can be attached.'
+[refusal haiku #3] pass=True cycle=False commit=False tag=False pushed=False review=False refusals=2 calls=5 wall=23.8s timeout=False
+    'Cannot proceed: the problem "Bench problem bench-3" has no waypoint/observable, so `open_cycle` would refuse. Give it a waypoint first.'
+
+| case | model | pass | cycle | commit | tag | pushed | review | refusals | tool calls | wall s |
+|---|---|---|---|---|---|---|---|---|---|---|
+| happy | default | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 | 1 ± 0 | 2 ± 0 | 12 ± 0 |
+| happy | haiku | 3/3 | 3/3 | 3/3 | 3/3 | 3/3 | 3/3 | 1 ± 0 | 7 ± 0 | 24 ± 3 |
+| refusal | default | 3/3 | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 | 1 ± 0 | 2 ± 0 | 10 ± 0 |
+| refusal | haiku | 3/3 | 0/3 | 0/3 | 0/3 | 0/3 | 0/3 | 1 ± 0 | 3 ± 1 | 15 ± 6 |

@@ -1,0 +1,4152 @@
+{
+ "components": {
+  "schemas": {
+   "Body_convert_pdf_api_convert_pdf_post": {
+    "properties": {
+     "file": {
+      "contentMediaType": "application/octet-stream",
+      "title": "File",
+      "type": "string"
+     }
+    },
+    "required": [
+     "file"
+    ],
+    "title": "Body_convert_pdf_api_convert_pdf_post",
+    "type": "object"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "title": "Detail",
+      "type": "array"
+     }
+    },
+    "title": "HTTPValidationError",
+    "type": "object"
+   },
+   "ValidationError": {
+    "properties": {
+     "ctx": {
+      "title": "Context",
+      "type": "object"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "title": "Location",
+      "type": "array"
+     },
+     "msg": {
+      "title": "Message",
+      "type": "string"
+     },
+     "type": {
+      "title": "Error Type",
+      "type": "string"
+     }
+    },
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError",
+    "type": "object"
+   }
+  }
+ },
+ "info": {
+  "title": "Learn Hub",
+  "version": "0.2.0"
+ },
+ "openapi": "3.1.0",
+ "paths": {
+  "/": {
+   "get": {
+    "operationId": "landing__get",
+    "responses": {
+     "200": {
+      "content": {
+       "text/html": {
+        "schema": {
+         "type": "string"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Landing"
+   }
+  },
+  "/api/activity": {
+   "get": {
+    "operationId": "api_activity_api_activity_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Activity"
+   }
+  },
+  "/api/audiobook": {
+   "post": {
+    "description": "Start generating a chapter's audiobook (raw chapter text). body: ``{voice}``.",
+    "operationId": "api_audiobook_api_audiobook_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "anyOf": [
+         {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Body"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Audiobook"
+   }
+  },
+  "/api/audiobook/file": {
+   "get": {
+    "description": "Stream the generated MP3 (inline for the player; ``?download=1`` to save it).",
+    "operationId": "api_file_api_audiobook_file_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     },
+     {
+      "in": "query",
+      "name": "download",
+      "required": false,
+      "schema": {
+       "default": 0,
+       "title": "Download",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api File"
+   }
+  },
+  "/api/audiobook/list": {
+   "get": {
+    "operationId": "api_list_api_audiobook_list_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api List"
+   }
+  },
+  "/api/audiobook/status": {
+   "get": {
+    "operationId": "api_status_api_audiobook_status_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Status"
+   }
+  },
+  "/api/audiobook/timeline": {
+   "get": {
+    "description": "Chunk\u2192time map for read-along highlighting (exact sidecar, or estimated for older MP3s).",
+    "operationId": "api_timeline_api_audiobook_timeline_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Timeline"
+   }
+  },
+  "/api/audiobook/voices": {
+   "get": {
+    "operationId": "api_voices_api_audiobook_voices_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api Voices"
+   }
+  },
+  "/api/build": {
+   "get": {
+    "operationId": "api_build_list_api_build_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Build List"
+   },
+   "post": {
+    "operationId": "api_build_api_build_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "default": "",
+       "title": "Scope",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "anyOf": [
+         {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Body"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Build"
+   }
+  },
+  "/api/build/cancel": {
+   "post": {
+    "description": "Cancel one job. ``scope`` is part of the job's identity, not a filter \u2014 an empty\nscope names the whole-document job specifically, which is exactly what\n``POST /api/extract`` with no scope enqueues. Rejecting it left those jobs\nuncancellable: the only way to stop one was to edit the ledger by hand.",
+    "operationId": "api_build_cancel_api_build_cancel_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "default": "",
+       "title": "Scope",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "kind",
+      "required": false,
+      "schema": {
+       "default": "build",
+       "title": "Kind",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Build Cancel"
+   }
+  },
+  "/api/chapter": {
+   "get": {
+    "description": "Pull an ENTIRE chapter's text by number / sectionKey / title substring.",
+    "operationId": "api_chapter_api_chapter_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "description": "chapter number, sectionKey, or title substring",
+      "in": "query",
+      "name": "ref",
+      "required": true,
+      "schema": {
+       "description": "chapter number, sectionKey, or title substring",
+       "title": "Ref",
+       "type": "string"
+      }
+     },
+     {
+      "description": "optional cap on returned markdown (0 = no cap)",
+      "in": "query",
+      "name": "max_chars",
+      "required": false,
+      "schema": {
+       "default": 0,
+       "description": "optional cap on returned markdown (0 = no cap)",
+       "minimum": 0,
+       "title": "Max Chars",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Chapter"
+   }
+  },
+  "/api/chapter-progress": {
+   "get": {
+    "operationId": "api_chapter_progress_api_chapter_progress_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Chapter Progress"
+   },
+   "post": {
+    "operationId": "api_update_progress_api_chapter_progress_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "anyOf": [
+         {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Body"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Update Progress"
+   }
+  },
+  "/api/chapters": {
+   "get": {
+    "description": "Canonical chapter units \u2014 every chapter list in the app derives from this.",
+    "operationId": "api_chapters_api_chapters_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Chapters"
+   }
+  },
+  "/api/concept-mastery": {
+   "get": {
+    "operationId": "api_concept_mastery_api_concept_mastery_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Concept Mastery"
+   }
+  },
+  "/api/concept/{key}": {
+   "delete": {
+    "description": "Curation: remove a junk concept plus its review history. The concept's\nsection/document content is untouched \u2014 re-extracting the section will re-create\nthe concept if the model still finds it.",
+    "operationId": "api_delete_concept_api_concept__key__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Concept"
+   },
+   "patch": {
+    "description": "Edit a concept's curatable fields (name, signal, source, kind).\nKeys/provenance are immutable; review history is keyed by the concept key (untouched).",
+    "operationId": "api_update_concept_api_concept__key__patch",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Update Concept"
+   }
+  },
+  "/api/concepts": {
+   "get": {
+    "description": "Document-level concept list with provenance.",
+    "operationId": "api_document_concepts_api_concepts_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Document Concepts"
+   }
+  },
+  "/api/convert-pdf": {
+   "post": {
+    "description": "Start a background conversion; returns ``{jobId, status:\"running\"}``.\n\nAccepts a rendered book (``.pdf``) or an authored one (``.md``); the conductor picks\nthe converter from the extension. If this exact file (by content hash) was already\ningested, returns ``{status:\"duplicate\", docId, ...}`` instead \u2014 pass ``?force=1`` to\nre-ingest anyway.\n\nThe route keeps its ``/api/convert-pdf`` path: it is the documented seam the frontend\nproxy and the status endpoint are both keyed to, and renaming it would break queued\nclients for a cosmetic gain.",
+    "operationId": "convert_pdf_api_convert_pdf_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "force",
+      "required": false,
+      "schema": {
+       "default": 0,
+       "title": "Force",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_convert_pdf_api_convert_pdf_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Convert Pdf"
+   }
+  },
+  "/api/convert-pdf/status": {
+   "get": {
+    "description": "Poll a conversion job: ``running`` | ``done`` (+result) | ``error`` (+error) | ``unknown``.\n``jobId`` is the document id. On ``done`` the result's markdown is read from the stored\ndocument (kept off the job ledger row).",
+    "operationId": "convert_pdf_status_api_convert_pdf_status_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "jobId",
+      "required": true,
+      "schema": {
+       "title": "Jobid",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Convert Pdf Status"
+   }
+  },
+  "/api/course-status": {
+   "get": {
+    "description": "One pipeline status for a course: does the content exist, is there an outline, and\nhow far concept coverage has progressed per chapter. Drives the UI status strip\nand reason-aware empty states (exists=false -> broken content link).",
+    "operationId": "api_course_status_api_course_status_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Course Status"
+   }
+  },
+  "/api/document": {
+   "delete": {
+    "description": "Delete a course outright: document row, every learn table keyed by it, its on-disk\nartifacts, and its audiobooks. Irreversible.\n\nThe audiobooks are why this handler is not a pure pass-through. They live in\n`supplemental/media` and `process/content` may not import it \u2014 the layering forbids a\nsideways dependency \u2014 so `delete_document` takes a callback and the composition happens\nhere, at the one layer allowed to know about both (finding B5).",
+    "operationId": "api_delete_document_api_document_delete",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "token",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Token"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Document"
+   },
+   "get": {
+    "operationId": "api_document_api_document_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Document"
+   }
+  },
+  "/api/document/deletion": {
+   "get": {
+    "description": "What deleting a course would remove \u2014 source, versions, study rows, audiobooks \u2014\nplus the token `DELETE /api/document` needs. Read before the button, never after.",
+    "operationId": "api_document_deletion_api_document_deletion_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Document Deletion"
+   }
+  },
+  "/api/document/pdf": {
+   "get": {
+    "description": "The ORIGINAL uploaded PDF, untouched \u2014 the source of truth a reader can verify\nthe extracted content against. 404 for documents ingested from non-PDF sources.",
+    "operationId": "api_document_pdf_api_document_pdf_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Document Pdf"
+   }
+  },
+  "/api/documents": {
+   "get": {
+    "description": "List the processed courses (one per converted document). Returns the learnDocId each\nstudy/concept endpoint expects as ``doc``.",
+    "operationId": "api_list_documents_api_documents_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api List Documents"
+   }
+  },
+  "/api/elements": {
+   "get": {
+    "description": "The typed retrieval layer: list a document's figures/tables/equations/code, filtered by\n``scope`` (a toc: key \u2192 section + descendants) and/or ``type``. Figures carry an ``imageRef``;\nfetch the bytes from ``/api/figure?doc=&n=<order>``.",
+    "operationId": "api_elements_api_elements_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     },
+     {
+      "in": "query",
+      "name": "type",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Type"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Elements"
+   }
+  },
+  "/api/engagement": {
+   "post": {
+    "description": "Append one passive engagement event (read/listen/orient \u2026).\n\nThe wire calls it ``scope`` and the column calls it ``section_key``; they are the same\nvalue. This handler used to pass the whole body as one positional argument, which made\nevery call a TypeError \u2014 so no passive event was ever written and every read/listen\nread-model has been rendering an empty set since it shipped.",
+    "operationId": "api_engagement_api_engagement_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Engagement"
+   }
+  },
+  "/api/exams": {
+   "get": {
+    "description": "Past and open sittings for a course, newest first.",
+    "operationId": "api_exams_api_exams_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exams"
+   },
+   "post": {
+    "description": "Assemble and FREEZE a sitting: {doc, chapters: [...], perChapter?, kinds?}.",
+    "operationId": "api_create_exam_api_exams_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Create Exam"
+   }
+  },
+  "/api/exams/{key}": {
+   "get": {
+    "description": "One sitting with its frozen questions \u2014 how a reload resumes mid-paper.",
+    "operationId": "api_exam_api_exams__key__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam"
+   }
+  },
+  "/api/exams/{key}/answer": {
+   "post": {
+    "description": "Record one written answer: {itemKey, response}. Saved per answer, so a closed tab\ncosts nothing.",
+    "operationId": "api_exam_answer_api_exams__key__answer_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam Answer"
+   }
+  },
+  "/api/exams/{key}/finish": {
+   "post": {
+    "description": "Close the paper. Answers stop being editable; grading begins.",
+    "operationId": "api_exam_finish_api_exams__key__finish_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam Finish"
+   }
+  },
+  "/api/exams/{key}/grade": {
+   "post": {
+    "description": "Self-grade one answer (1-4) on the results walk \u2014 same engine as practice.",
+    "operationId": "api_exam_grade_api_exams__key__grade_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam Grade"
+   }
+  },
+  "/api/exams/{key}/resit": {
+   "post": {
+    "description": "Sit the SAME paper again \u2014 the item list is copied, never reassembled.",
+    "operationId": "api_exam_resit_api_exams__key__resit_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam Resit"
+   }
+  },
+  "/api/exams/{key}/results": {
+   "get": {
+    "description": "Score, per-section and per-kind breakdown, and the prior sitting when this is a resit.",
+    "operationId": "api_exam_results_api_exams__key__results_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Exam Results"
+   }
+  },
+  "/api/extract": {
+   "post": {
+    "description": "Start a background concept extraction (queued). ``?scope=toc:1`` = one chapter (and\neverything under it); body ``sectionKeys`` = an exact set (the TOC-preview selection);\nneither = the whole document (slow). Returns immediately with ``status:running``.",
+    "operationId": "api_extract_api_extract_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "anyOf": [
+         {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Body"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Extract"
+   }
+  },
+  "/api/extract/status": {
+   "get": {
+    "description": "Poll a background extraction's status (idle | running | done | error).",
+    "operationId": "api_extract_status_api_extract_status_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Extract Status"
+   }
+  },
+  "/api/figure": {
+   "get": {
+    "description": "Serve a figure PNG by (doc, element order ``n``). 404 when the file is missing.",
+    "operationId": "api_figure_api_figure_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "n",
+      "required": true,
+      "schema": {
+       "title": "N",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Figure"
+   }
+  },
+  "/api/forecast": {
+   "get": {
+    "operationId": "api_forecast_api_forecast_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "days",
+      "required": false,
+      "schema": {
+       "default": 7,
+       "title": "Days",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Forecast"
+   }
+  },
+  "/api/guided-reading": {
+   "get": {
+    "description": "Everything the reading surface needs for one chapter: briefing + markdown +\nconcepts + status. Reads caches only \u2014 never calls the LLM.",
+    "operationId": "api_guided_reading_api_guided_reading_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "default": "",
+       "title": "Scope",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Guided Reading"
+   }
+  },
+  "/api/jobs": {
+   "get": {
+    "description": "The full processing ledger for a course \u2014 every kind, queued/running/done/error.",
+    "operationId": "api_jobs_api_jobs_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Jobs"
+   }
+  },
+  "/api/mastery": {
+   "get": {
+    "operationId": "api_mastery_api_mastery_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Mastery"
+   }
+  },
+  "/api/material/stale": {
+   "get": {
+    "description": "Sections whose material changed after their concepts were built \u2014 the rebuild cue.\nDerived from timestamps, so a rebuild clears it without anything resetting a flag.",
+    "operationId": "api_stale_sections_api_material_stale_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Stale Sections"
+   }
+  },
+  "/api/orient": {
+   "get": {
+    "operationId": "api_orient_api_orient_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     },
+     {
+      "in": "query",
+      "name": "regenerate",
+      "required": false,
+      "schema": {
+       "default": 0,
+       "title": "Regenerate",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Orient"
+   }
+  },
+  "/api/outline": {
+   "get": {
+    "description": "The document's outline only (no markdown) \u2014 chapter list for the reader.",
+    "operationId": "api_outline_api_outline_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Outline"
+   },
+   "post": {
+    "description": "Reconcile this course's outline to the sections given \u2014 an ordered flat list of\n``{sectionKey?, title, depth}``. A section with no key is new. Removing sections is\nrefused on the Default course (409): concepts anchor to its tree.",
+    "operationId": "api_save_outline_api_outline_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Save Outline"
+   }
+  },
+  "/api/practice": {
+   "get": {
+    "description": "The scope's practice items (inherited through the version's blocks).",
+    "operationId": "api_practice_api_practice_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice"
+   }
+  },
+  "/api/practice/item": {
+   "post": {
+    "description": "Hand-author one item: {doc, sectionKey, kind, prompt, answer, rubric?, payload?}.",
+    "operationId": "api_practice_create_api_practice_item_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice Create"
+   }
+  },
+  "/api/practice/item/{key}": {
+   "delete": {
+    "operationId": "api_practice_delete_api_practice_item__key__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice Delete"
+   },
+   "post": {
+    "operationId": "api_practice_update_api_practice_item__key__post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice Update"
+   }
+  },
+  "/api/practice/prepare": {
+   "get": {
+    "description": "How much of the scope has authored items yet (+ running flag).",
+    "operationId": "api_practice_prepare_status_api_practice_prepare_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice Prepare Status"
+   },
+   "post": {
+    "description": "Author the scope's practice items \u2014 enqueued on the processing ledger (visible in\nthe Process tab, survives restarts). body: {doc, scope, kinds?, model?, regenerate?}.\n``regenerate`` rewrites only untouched items (edited_at IS NULL); edits are permanent.",
+    "operationId": "api_practice_prepare_api_practice_prepare_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Practice Prepare"
+   }
+  },
+  "/api/queue": {
+   "post": {
+    "operationId": "api_queue_set_api_queue_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Queue Set"
+   }
+  },
+  "/api/reading-guide": {
+   "get": {
+    "description": "The guided read for a chapter: each section's text + skeleton position + focus + checks.",
+    "operationId": "api_reading_guide_api_reading_guide_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Reading Guide"
+   }
+  },
+  "/api/reading-guide/prepare": {
+   "get": {
+    "description": "How many of a chapter's sections have authored guidance yet (+ running flag).",
+    "operationId": "api_reading_guide_prepare_status_api_reading_guide_prepare_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Reading Guide Prepare Status"
+   },
+   "post": {
+    "description": "Author ALL of a chapter's guidance \u2014 enqueued on the processing ledger (visible in\nthe Process tab, survives restarts). Returns current status.",
+    "operationId": "api_reading_guide_prepare_api_reading_guide_prepare_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Reading Guide Prepare"
+   }
+  },
+  "/api/review-calendar": {
+   "get": {
+    "description": "Whole-library review calendar: per-day due counts (per course, per item type) over\nthe horizon, plus the overdue pile. Powers the /study planner.",
+    "operationId": "api_review_calendar_api_review_calendar_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "days",
+      "required": false,
+      "schema": {
+       "default": 60,
+       "maximum": 365,
+       "minimum": 1,
+       "title": "Days",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Review Calendar"
+   }
+  },
+  "/api/review/grade": {
+   "post": {
+    "description": "Grade one recall (1=Again, 2=Hard, 3=Good, 4=Easy). Skeleton (structure-recall) and\nchapter-resurface items grade through the same route \u2014 see study/reviews.py.",
+    "operationId": "api_review_grade_api_review_grade_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Review Grade"
+   }
+  },
+  "/api/review/queue": {
+   "get": {
+    "description": "Concepts to review now for one chapter/section scope (studying is chapter-scoped).\n``session=practice`` returns the separate practice-item queue instead.",
+    "operationId": "api_review_queue_api_review_queue_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": true,
+      "schema": {
+       "minLength": 1,
+       "title": "Scope",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "limit",
+      "required": false,
+      "schema": {
+       "default": 40,
+       "maximum": 200,
+       "minimum": 1,
+       "title": "Limit",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "query",
+      "name": "session",
+      "required": false,
+      "schema": {
+       "default": "concepts",
+       "title": "Session",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Review Queue"
+   }
+  },
+  "/api/search": {
+   "get": {
+    "description": "Keyword-search a course's content \u2014 locate a topic, then pull it with\n/api/section or /api/chapter.",
+    "operationId": "api_search_api_search_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "description": "keywords to find in the course content",
+      "in": "query",
+      "name": "q",
+      "required": true,
+      "schema": {
+       "description": "keywords to find in the course content",
+       "minLength": 2,
+       "title": "Q",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "limit",
+      "required": false,
+      "schema": {
+       "default": 8,
+       "maximum": 40,
+       "minimum": 1,
+       "title": "Limit",
+       "type": "integer"
+      }
+     },
+     {
+      "description": "include each match's full block markdown",
+      "in": "query",
+      "name": "full",
+      "required": false,
+      "schema": {
+       "default": false,
+       "description": "include each match's full block markdown",
+       "title": "Full",
+       "type": "boolean"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Search"
+   }
+  },
+  "/api/section/material": {
+   "delete": {
+    "description": "Drop this course's rewrite of a block and read the book's text again.",
+    "operationId": "api_revert_material_api_section_material_delete",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "block",
+      "required": true,
+      "schema": {
+       "title": "Block",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Revert Material"
+   },
+   "get": {
+    "description": "This course's editable blocks for a section \u2014 each with the key an edit addresses,\nits own markdown, and whether this course has already rewritten it.",
+    "operationId": "api_section_material_api_section_material_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "default": "",
+       "title": "Scope",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Section Material"
+   },
+   "patch": {
+    "description": "Rewrite one block. ``target=book`` fixes the source for every course cut from it;\n``target=version`` stores this course's own wording (copy-on-write).",
+    "operationId": "api_edit_material_api_section_material_patch",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "description": "raw_content key of the block being edited",
+      "in": "query",
+      "name": "block",
+      "required": true,
+      "schema": {
+       "description": "raw_content key of the block being edited",
+       "title": "Block",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "target",
+      "required": false,
+      "schema": {
+       "default": "version",
+       "pattern": "^(book|version)$",
+       "title": "Target",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Edit Material"
+   }
+  },
+  "/api/section/{key}/concepts": {
+   "get": {
+    "description": "Concept-lessons for a section (the course view).",
+    "operationId": "api_section_concepts_api_section__key__concepts_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Section Concepts"
+   }
+  },
+  "/api/section/{key}/content": {
+   "get": {
+    "operationId": "api_section_content_api_section__key__content_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Section Content"
+   }
+  },
+  "/api/skeleton": {
+   "get": {
+    "operationId": "api_skeleton_api_skeleton_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     },
+     {
+      "in": "query",
+      "name": "regenerate",
+      "required": false,
+      "schema": {
+       "default": 0,
+       "title": "Regenerate",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Skeleton"
+   }
+  },
+  "/api/skeleton/grade": {
+   "post": {
+    "operationId": "api_skeleton_grade_api_skeleton_grade_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "scope",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Scope"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "anyOf": [
+         {
+          "additionalProperties": true,
+          "type": "object"
+         },
+         {
+          "type": "null"
+         }
+        ],
+        "title": "Body"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Skeleton Grade"
+   }
+  },
+  "/api/study-debt": {
+   "get": {
+    "description": "The compact cross-course review-debt rollup (nav badge, morning vault briefing):\nwhat's due now and what fades within ``days``, per course and in total.",
+    "operationId": "api_study_debt_api_study_debt_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "days",
+      "required": false,
+      "schema": {
+       "default": 7,
+       "title": "Days",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Study Debt"
+   }
+  },
+  "/api/study/manual-session": {
+   "delete": {
+    "operationId": "api_manual_session_delete_api_study_manual_session_delete",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "key",
+      "required": true,
+      "schema": {
+       "title": "Key",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Manual Session Delete"
+   },
+   "post": {
+    "description": "Create (no ``key``) or update (``key``) a manual study-time block. Timestamps are\nepoch seconds. The write-side exception in this read-model router \u2014 manual blocks\nARE tracking data, owned here next to the sessions read they feed.",
+    "operationId": "api_manual_session_upsert_api_study_manual_session_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Payload",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Manual Session Upsert"
+   }
+  },
+  "/api/study/sessions": {
+   "get": {
+    "description": "Working sessions derived from the study-event floor (gap-clustered, newest first),\nmerged with the user's manual time blocks, with a summary strip. Optionally scoped\nto one course.",
+    "operationId": "api_study_sessions_api_study_sessions_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     },
+     {
+      "in": "query",
+      "name": "days",
+      "required": false,
+      "schema": {
+       "default": 90,
+       "maximum": 730,
+       "minimum": 1,
+       "title": "Days",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Study Sessions"
+   }
+  },
+  "/api/system": {
+   "get": {
+    "operationId": "api_system_api_system_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Api System"
+   }
+  },
+  "/api/toc-tree": {
+   "get": {
+    "operationId": "api_toc_tree_api_toc_tree_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Doc"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Toc Tree"
+   }
+  },
+  "/api/version": {
+   "delete": {
+    "description": "Delete ONE version \u2014 its outline, material mapping and study state. The book, its\ntext and its concepts survive. The Default cannot be deleted (409).",
+    "operationId": "api_delete_version_api_version_delete",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Delete Version"
+   },
+   "patch": {
+    "description": "Rename a version and/or make it main. Both are idempotent.",
+    "operationId": "api_update_version_api_version_patch",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "name",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Name"
+      }
+     },
+     {
+      "description": "true = make this the version the card opens",
+      "in": "query",
+      "name": "main",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "boolean"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "description": "true = make this the version the card opens",
+       "title": "Main"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Update Version"
+   },
+   "post": {
+    "description": "A new version of this book, seeded from its Default (same outline, all material).\nCreated not-main; switching is a separate call.",
+    "operationId": "api_create_version_api_version_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "name",
+      "required": true,
+      "schema": {
+       "minLength": 1,
+       "title": "Name",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Create Version"
+   }
+  },
+  "/api/version/blocks": {
+   "patch": {
+    "description": "File the given blocks under a different section of this course.",
+    "operationId": "api_move_blocks_api_version_blocks_patch",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     },
+     {
+      "in": "query",
+      "name": "section",
+      "required": true,
+      "schema": {
+       "title": "Section",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Move Blocks"
+   }
+  },
+  "/api/version/blocks/remove": {
+   "post": {
+    "description": "Drop material from THIS course \u2014 distilling. The book and other courses keep it.\nPOST rather than DELETE because the block list is a body, not a query string.",
+    "operationId": "api_remove_blocks_api_version_blocks_remove_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "additionalProperties": true,
+        "title": "Body",
+        "type": "object"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Remove Blocks"
+   }
+  },
+  "/api/version/unplaced": {
+   "get": {
+    "description": "Material this course keeps but files under no section \u2014 so a delete never makes\ncontent vanish silently, it just leaves it unplaced.",
+    "operationId": "api_unplaced_blocks_api_version_unplaced_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api Unplaced Blocks"
+   }
+  },
+  "/api/versions": {
+   "get": {
+    "description": "Every version of this doc's book, oldest first, with which one is main.",
+    "operationId": "api_list_versions_api_versions_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "doc",
+      "required": true,
+      "schema": {
+       "title": "Doc",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Api List Versions"
+   }
+  },
+  "/health": {
+   "get": {
+    "description": "Fleet health shape \u2014 ``{ok, checks, freshness}`` (mission-control renders it).\n\n``ok`` tracks postgres only: the app serves without Ollama (LLM work just queues),\nso ``checks.ollama = false`` must not flip ``ok``. Always answers 200, fast \u2014\na down dependency is a false check, never an error here.",
+    "operationId": "health_health_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Health"
+   }
+  }
+ }
+}
