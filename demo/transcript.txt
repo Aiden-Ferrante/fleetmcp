@@ -1,0 +1,40 @@
+# fleetmcp over stdio: 50 tools; Mission Control stub at http://127.0.0.1:56651
+# mc_stop_app: destructiveHint=True, required=['app_id', 'impact_token']
+
+## 1. normal read
+-> mc_apps {}
+HTTP Request: GET http://127.0.0.1:56651/api/apps "HTTP/1.1 200 OK"
+<- isError=False
+   {"id": "ollama", "status": "running", "port": 11434, "requires": []}
+   {"id": "vaultwriter", "status": "running", "port": 8020, "requires": ["ollama"]}
+   {"id": "learnhub", "status": "stopped", "port": 8010, "requires": ["ollama"]}
+
+## 2. read the blast radius before stopping ollama
+-> mc_app_impact {"app_id": "ollama"}
+HTTP Request: GET http://127.0.0.1:56651/api/apps/ollama/impact "HTTP/1.1 200 OK"
+<- isError=False
+   {"app": "ollama", "dependents": ["vaultwriter"], "start_order": [], "token": "9c72297b75ca3925"}
+
+## 3. meanwhile, a dependent starts
+-> mc_start_app {"app_id": "learnhub"}
+HTTP Request: POST http://127.0.0.1:56651/api/apps/learnhub/start?with_deps=false "HTTP/1.1 200 OK"
+<- isError=False
+   {"ok": true, "started": ["learnhub"]}
+
+## 4. destructive call with the now-stale token: the app refuses
+-> mc_stop_app {"app_id": "ollama", "impact_token": "9c72297b75ca3925"}
+HTTP Request: POST http://127.0.0.1:56651/api/apps/ollama/stop?token=9c72297b75ca3925 "HTTP/1.1 409 Conflict"
+<- isError=True
+   Error executing tool mc_stop_app: mission-control 409: stop refused: the impact token is stale. When it was read, stopping ollama took down [vaultwriter]; now it takes down [learnhub, vaultwriter]. Read mc_app_impact('ollama') again and confirm the new blast radius with the human.
+
+## 5. re-read the impact
+-> mc_app_impact {"app_id": "ollama"}
+HTTP Request: GET http://127.0.0.1:56651/api/apps/ollama/impact "HTTP/1.1 200 OK"
+<- isError=False
+   {"app": "ollama", "dependents": ["learnhub", "vaultwriter"], "start_order": [], "token": "caf58588783476e5"}
+
+## 6. same call with the fresh token (in real use, after the human says yes)
+-> mc_stop_app {"app_id": "ollama", "impact_token": "caf58588783476e5"}
+HTTP Request: POST http://127.0.0.1:56651/api/apps/ollama/stop?token=caf58588783476e5 "HTTP/1.1 200 OK"
+<- isError=False
+   {"ok": true, "stopped": ["learnhub", "vaultwriter", "ollama"]}
