@@ -1,26 +1,63 @@
 # fleetmcp
 
+[![CI](https://github.com/Aiden-Ferrante/fleetmcp/actions/workflows/ci.yml/badge.svg)](https://github.com/Aiden-Ferrante/fleetmcp/actions/workflows/ci.yml)
+
 One MCP server, generated from OpenAPI specs, that gives a coding agent 50 curated tools over four local apps, and forwards their refusals instead of making decisions itself.
 
 **Result:** in 12 headless Claude Code runs (6 normal tasks, 6 refusal cases, two models), every run passed: each normal task opened a cycle, committed, tagged, pushed and ticked review using only these tools, and each refusal case stopped with nothing opened or committed. Total cost was $2.29 (`bench/results/2026-09-05.json`).
 
 ## Quickstart
 
-Needs Python 3.12 (the version tested). No app has to be running: the tests use `httpx.MockTransport` and the checked-in OpenAPI fixtures.
+Needs Python 3.12 (the version tested). No app has to be running: the tests use `httpx.MockTransport`, the checked-in OpenAPI fixtures and the in-repo demo stub.
 
 ```
 python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-.venv/bin/python -m pytest tests -q          # 16 tests, offline
+.venv/bin/python -m pytest -q                # 25 tests, offline
+make demo                                    # see it run against a stub app (below)
 .venv/bin/python -m fleetmcp.gen             # re-render generated.py from tools.yaml + fixtures/
 .venv/bin/python -m fleetmcp.trifecta        # private-data / untrusted-content / egress counts
 ```
+
+`make lint` runs ruff and mypy; CI runs those, `python -m fleetmcp.gen --check` and the tests on Python 3.12.
+
+## See it run
+
+The four real apps are private, so `demo/mc_stub.py` stands in for one of them. It is a small FastAPI app with the paths and query parameters of the checked-in Mission Control fixture (a test holds it to that), over three fake processes. It enforces the rule the real app's spec gives its one destructive endpoint: `stop` is refused without the token that the impact read issued for the blast radius *as it stands now*. The refusal wording is the stub's own.
+
+`make demo` starts the stub, spawns `python -m fleetmcp.server` over stdio with a real MCP client, and calls the tools the way an agent would. This excerpt is from the committed run in `demo/transcript.txt` (unedited; the `HTTP Request:` lines are the server's own log):
+
+```
+## 2. read the blast radius before stopping ollama
+-> mc_app_impact {"app_id": "ollama"}
+HTTP Request: GET http://127.0.0.1:56651/api/apps/ollama/impact "HTTP/1.1 200 OK"
+<- isError=False
+   {"app": "ollama", "dependents": ["vaultwriter"], "start_order": [], "token": "9c72297b75ca3925"}
+
+## 3. meanwhile, a dependent starts
+-> mc_start_app {"app_id": "learnhub"}
+HTTP Request: POST http://127.0.0.1:56651/api/apps/learnhub/start?with_deps=false "HTTP/1.1 200 OK"
+<- isError=False
+   {"ok": true, "started": ["learnhub"]}
+
+## 4. destructive call with the now-stale token: the app refuses
+-> mc_stop_app {"app_id": "ollama", "impact_token": "9c72297b75ca3925"}
+HTTP Request: POST http://127.0.0.1:56651/api/apps/ollama/stop?token=9c72297b75ca3925 "HTTP/1.1 409 Conflict"
+<- isError=True
+   Error executing tool mc_stop_app: mission-control 409: stop refused: the impact token is stale. When it was read, stopping ollama took down [vaultwriter]; now it takes down [learnhub, vaultwriter]. Read mc_app_impact('ollama') again and confirm the new blast radius with the human.
+```
+
+What the agent receives for the refused call is a tool result with `isError: true` whose text is the app's sentence, not a bare 409:
+
+> Error executing tool mc_stop_app: mission-control 409: stop refused: the impact token is stale. When it was read, stopping ollama took down [vaultwriter]; now it takes down [learnhub, vaultwriter]. Read mc_app_impact('ollama') again and confirm the new blast radius with the human.
+
+The server made no decision there. It passed the token through, and the app compared it with the impact recomputed at that moment. The transcript goes on to re-read the impact and stop with the fresh token, which succeeds.
 
 ## What went wrong / what I learned
 
 - **A generator bug silently dropped an argument.** The three destructive endpoints already declare `?token=`, and the generator appended the impact token on top. The output was `params={'token': token, 'token': impact_token}`. Python keeps the last key, so one argument was accepted and thrown away, and the ten existing tests never noticed. It is fixed in `gen.py`. `tests/test_mcp.py` now rejects any repeated key in `generated.py` and checks that each destructive tool sends exactly one token. Both checks fail on the old file.
 - **The guardrails live in the apps, not here.** This server holds no state and decides nothing. A destructive call goes through only with a token from the matching impact read, and the app (shipyard or Mission Control) checks the token against the impact as it stands now and refuses a missing or stale one. The server's job is to carry the app's own refusal sentence back to the agent, so the agent sees the reason rather than a bare status code.
 - **Refusal cases are in the evals.** Half the bench seeds a problem the gates must refuse. A run passes only if nothing was opened or committed and the agent's answer names the missing fact. In the first bench pass, the default model failed 3/3 normal tasks. The cause was the harness: the scratch repo itself had uncommitted files, and the model correctly stopped at the review gate (`bench/results/2026-09-05-pass1-dirty-harness.*`). The harness was fixed and the bench re-run.
-- **My first trifecta count was wrong.** I had classified tools by group and got 47 private / 25 untrusted / 0 egress. Classifying each tool by reading its handler gives 37 / 37 / 0. Many writes return rows that other sessions wrote, and health and ack-only endpoints carry no owner data. The counts are per tool server. The agent calling these tools usually also has a shell and web access, so at the session level all three legs can be present.
+- **My first trifecta count was wrong.** (The "lethal trifecta" is an agent that has access to private data, reads untrusted content that someone else wrote, and has a way to send data out; with all three, instructions injected into that content can leak the data.) I had classified tools by group and got 47 private / 25 untrusted / 0 egress. Classifying each tool by reading its handler gives 37 / 37 / 0. Many writes return rows that other sessions wrote, and health and ack-only endpoints carry no owner data. The counts are per tool server. The agent calling these tools usually also has a shell and web access, so at the session level all three legs can be present.
 
 ## Layout
 
@@ -29,9 +66,10 @@ python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 - `fleetmcp/server.py` registers each generated function with MCP annotations derived from its kind: `readOnlyHint` for reads, and `destructiveHint` plus a required `impact_token` for destructive tools. Run it with `python -m fleetmcp.server` (stdio).
 - `fleetmcp/http.py` is the single HTTP path. App base URLs come from `FLEET_<APP>_URL` and default to loopback. Every request carries an `X-Actor` header. The session id in that header is optional and is read from `$FLEETMCP_SESSION_FILE`, or from `.claude/fleet-session.json` when that file exists.
 - `fleetmcp/trifecta.py` loads and validates the per-tool trifecta fields and prints the counts.
+- `demo/` holds the Mission Control stub, the `make demo` driver and its recorded transcript. `tests/test_demo_stub.py` checks the stub against the fixture, covers missing, stale, foreign and reused tokens, and runs the demo end to end.
 - `bench/run.py` is the end-to-end eval. It needs a shipyard checkout (`--shipyard` or `BENCH_SHIPYARD`) and the Claude Code CLI on PATH, so it cannot run from this repo alone. `bench/results/` holds the runs it produced.
 
-The four apps it drives (shipyard, helm, Mission Control, Learn Hub) are private personal tools and are not included. The fixtures hold only their OpenAPI schemas.
+The four apps it drives (shipyard, helm, Mission Control, Learn Hub) are private personal tools and are not included. The fixtures hold only their OpenAPI schemas. The bench results above came from the real apps; the demo uses the stub, not them.
 
 ## License
 
