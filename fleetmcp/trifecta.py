@@ -40,7 +40,9 @@ def counts(tools: list[dict]) -> dict[str, int]:
 
 def main() -> int:
     tools = load()
-    rows = [("app", "tools", "private data", "untrusted content", "egress")]
+    rows: list[tuple[str, int | str, int | str, int | str, int | str]] = [
+        ("app", "tools", "private data", "untrusted content", "egress")
+    ]
     for app in dict.fromkeys(t["app"] for t in tools):
         c = counts([t for t in tools if t["app"] == app])
         rows.append((app, c["tools"], c["private_data"], c["untrusted_content"], c["egress"]))

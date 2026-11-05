@@ -36,11 +36,12 @@ class ToolError(RuntimeError):
 
 def actor() -> str:
     """`claude-code:<session_id>` when a session file exists, else unknown."""
-    f = os.environ.get("FLEETMCP_SESSION_FILE")
-    if not f:
+    env = os.environ.get("FLEETMCP_SESSION_FILE")
+    if env:
+        f = Path(env)
+    else:
         root = os.environ.get("CLAUDE_PROJECT_DIR") or os.getcwd()
         f = Path(root) / ".claude" / "fleet-session.json"
-    f = Path(f)
     try:
         sid = json.loads(f.read_text()).get("session_id")
         if sid:

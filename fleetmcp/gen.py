@@ -117,7 +117,8 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
                                  f" takes no ?token= in fixtures/{t['app']}.json")
             params = [p for p in params if not (p["name"] == "token" and p["where"] == "query")]
         body = _body_fields(op, spec)
-        args_req, args_opt = [], []
+        args_req: list[dict] = []
+        args_opt: list[dict] = []
         for p in params:
             (args_req if p["required"] else args_opt).append(p)
         for b in body:
@@ -138,9 +139,9 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
         if t["kind"] == "destructive":
             q = (q + ", " if q else "") + "'token': impact_token"
         if body and body[0].get("raw"):
-            b = "body"
+            body_expr = "body"
         else:
-            b = "{" + ", ".join(f"{f['name']!r}: {_ident(f['name'])}" for f in body) + "}" if body else "None"
+            body_expr = "{" + ", ".join(f"{f['name']!r}: {_ident(f['name'])}" for f in body) + "}" if body else "None"
         doc = t["description"].strip().replace('"""', "'''")
         lines += [
             f"def {t['name']}({', '.join(sig)}):",
@@ -149,7 +150,7 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
             f"    kind: {t['kind']} · {t['method']} {t['path']} on {t['app']}",
             '    """',
             f"    return _http.call(APPS[{t['app']!r}], {t['app']!r}, {t['method']!r}, {path_lit},",
-            f"                      params={{{q}}}, body={b})",
+            f"                      params={{{q}}}, body={body_expr})",
             "",
             "",
             f"TOOLS.append({{'name': {t['name']!r}, 'kind': {t['kind']!r}, 'app': {t['app']!r}, 'fn': {t['name']}}})",
