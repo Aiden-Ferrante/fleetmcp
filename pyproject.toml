@@ -36,6 +36,6 @@ select = ["E", "W", "F", "I", "B", "UP"]
 
 [tool.mypy]
 python_version = "3.12"
-files = ["fleetmcp"]
+files = ["fleetmcp", "demo"]
 exclude = ["fleetmcp/generated\\.py$"]
 warn_unused_ignores = true
