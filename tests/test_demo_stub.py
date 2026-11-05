@@ -100,3 +100,18 @@ def test_the_stale_token_refusal_reaches_the_mcp_caller_verbatim(mc):
         assert "the impact token is stale" in str(e.value)
     finally:
         http.set_client(None)
+
+
+def test_the_demo_runs_end_to_end_over_stdio():
+    """`make demo` itself: a real stub process, the MCP server as a stdio subprocess.
+    The steps the README quotes from demo/transcript.txt must still come out."""
+    import subprocess
+    import sys
+    r = subprocess.run([sys.executable, "-m", "demo.run_demo"], cwd=ROOT, capture_output=True, text=True,
+                       timeout=60, check=True)
+    out = r.stdout
+    assert "# fleetmcp over stdio: 50 tools" in out
+    assert "required=['app_id', 'impact_token']" in out
+    assert out.count("<- isError=True") == 1
+    assert "mission-control 409: stop refused: the impact token is stale." in out
+    assert '"stopped": ["learnhub", "vaultwriter", "ollama"]' in out
