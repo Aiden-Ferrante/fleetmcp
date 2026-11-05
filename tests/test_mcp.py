@@ -12,8 +12,7 @@ import httpx
 import pytest
 import yaml
 
-from fleetmcp import gen, http
-from fleetmcp import generated
+from fleetmcp import gen, generated, http
 from fleetmcp.server import mcp
 
 ROOT = Path(__file__).resolve().parents[1]

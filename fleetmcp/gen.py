@@ -104,7 +104,8 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
         spec = specs[t["app"]]
         op = spec["paths"].get(t["path"], {}).get(t["method"].lower())
         if op is None:
-            raise SystemExit(f"{t['name']}: {t['method']} {t['path']} is not in fixtures/{t['app']}.json — refresh fixtures or fix tools.yaml")
+            raise SystemExit(f"{t['name']}: {t['method']} {t['path']} is not in fixtures/{t['app']}.json"
+                             " — refresh fixtures or fix tools.yaml")
         params = _params(op)
         if t["kind"] == "destructive":
             # The app's own `token` query param IS the impact token. Keep it out of
@@ -112,7 +113,8 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
             # silently dropped (the v0.1 bug: generated.py rendered
             # {'token': token, 'token': impact_token}).
             if not any(p["name"] == "token" and p["where"] == "query" for p in params):
-                raise SystemExit(f"{t['name']}: destructive but {t['method']} {t['path']} takes no ?token= in fixtures/{t['app']}.json")
+                raise SystemExit(f"{t['name']}: destructive but {t['method']} {t['path']}"
+                                 f" takes no ?token= in fixtures/{t['app']}.json")
             params = [p for p in params if not (p["name"] == "token" and p["where"] == "query")]
         body = _body_fields(op, spec)
         args_req, args_opt = [], []
@@ -125,11 +127,13 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
             sig.append("impact_token: str")
         for p in args_opt:
             d = p.get("default")
-            sig.append(f"{_ident(p['name'])}: {p['type']} | None = {d!r}" if d is not None else f"{_ident(p['name'])}: {p['type']} | None = None")
+            sig.append(f"{_ident(p['name'])}: {p['type']} | None = {d!r}")
         path_expr = t["path"]
         for p in params:
             if p["where"] == "path":
                 path_expr = path_expr.replace("{" + p["name"] + "}", "{" + _ident(p["name"]) + "}")
+        # An f-string only when the path has a placeholder (ruff F541 otherwise).
+        path_lit = ("f" if "{" in path_expr else "") + repr(path_expr)
         q = ", ".join(f"{p['name']!r}: {_ident(p['name'])}" for p in params if p["where"] == "query")
         if t["kind"] == "destructive":
             q = (q + ", " if q else "") + "'token': impact_token"
@@ -144,7 +148,7 @@ def render(tools_yaml: Path = TOOLS, fixtures: Path = FIXTURES) -> str:
             "",
             f"    kind: {t['kind']} · {t['method']} {t['path']} on {t['app']}",
             '    """',
-            f"    return _http.call(APPS[{t['app']!r}], {t['app']!r}, {t['method']!r}, f{path_expr!r},",
+            f"    return _http.call(APPS[{t['app']!r}], {t['app']!r}, {t['method']!r}, {path_lit},",
             f"                      params={{{q}}}, body={b})",
             "",
             "",

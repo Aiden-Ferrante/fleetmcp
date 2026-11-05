@@ -31,7 +31,9 @@ def counts(tools: list[dict]) -> dict[str, int]:
     out = {"tools": len(tools)}
     for leg in LEGS:
         out[leg] = sum(t["trifecta"][leg] for t in tools)
-    out["private_and_untrusted"] = sum(t["trifecta"]["private_data"] and t["trifecta"]["untrusted_content"] for t in tools)
+    out["private_and_untrusted"] = sum(
+        t["trifecta"]["private_data"] and t["trifecta"]["untrusted_content"] for t in tools
+    )
     out["all_three"] = sum(all(t["trifecta"][k] for k in LEGS) for t in tools)
     return out
 

@@ -24,7 +24,7 @@ def shipyard_problems():
 
     kind: read · GET /api/problems on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/problems',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/problems',
                       params={}, body=None)
 
 
@@ -60,7 +60,7 @@ def shipyard_create_problem(title: str, waypoint: str, anchor_basis: str | None 
 
     kind: write · POST /api/problems on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'POST', f'/api/problems',
+    return _http.call(APPS['shipyard'], 'shipyard', 'POST', '/api/problems',
                       params={}, body={'anchor_basis': anchor_basis, 'anchored_at': anchored_at, 'child_id': child_id, 'description': description, 'draft': draft, 'falsifier': falsifier, 'notes': notes, 'parent_id': parent_id, 'repo': repo, 'sounding': sounding, 'title': title, 'waypoint': waypoint})
 
 
@@ -84,7 +84,7 @@ def shipyard_direction(repo: str):
 
     kind: read · GET /api/direction on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/direction',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/direction',
                       params={'repo': repo}, body=None)
 
 
@@ -96,7 +96,7 @@ def shipyard_focus():
 
     kind: read · GET /api/focus on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/focus',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/focus',
                       params={}, body=None)
 
 
@@ -120,7 +120,7 @@ def shipyard_yard():
 
     kind: read · GET /api/yard on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/yard',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/yard',
                       params={}, body=None)
 
 
@@ -132,7 +132,7 @@ def shipyard_projects():
 
     kind: read · GET /api/projects on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/projects',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/projects',
                       params={}, body=None)
 
 
@@ -264,7 +264,7 @@ def shipyard_shelved():
 
     kind: read · GET /api/shelved on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/shelved',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/shelved',
                       params={}, body=None)
 
 
@@ -276,7 +276,7 @@ def shipyard_shelve(repo: str, note: str | None = ''):
 
     kind: write · POST /api/shelved on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'POST', f'/api/shelved',
+    return _http.call(APPS['shipyard'], 'shipyard', 'POST', '/api/shelved',
                       params={}, body={'note': note, 'repo': repo})
 
 
@@ -300,7 +300,7 @@ def shipyard_sessions(repo: str | None = None, since: str | None = None, limit: 
 
     kind: read · GET /api/sessions on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/api/sessions',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/api/sessions',
                       params={'repo': repo, 'since': since, 'limit': limit}, body=None)
 
 
@@ -312,7 +312,7 @@ def shipyard_health():
 
     kind: read · GET /health on shipyard
     """
-    return _http.call(APPS['shipyard'], 'shipyard', 'GET', f'/health',
+    return _http.call(APPS['shipyard'], 'shipyard', 'GET', '/health',
                       params={}, body=None)
 
 
@@ -324,7 +324,7 @@ def helm_overview():
 
     kind: read · GET /api/overview on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'GET', f'/api/overview',
+    return _http.call(APPS['helm'], 'helm', 'GET', '/api/overview',
                       params={}, body=None)
 
 
@@ -336,7 +336,7 @@ def helm_agenda():
 
     kind: read · GET /api/agenda on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'GET', f'/api/agenda',
+    return _http.call(APPS['helm'], 'helm', 'GET', '/api/agenda',
                       params={}, body=None)
 
 
@@ -348,7 +348,7 @@ def helm_dismiss(ref: str, source: str):
 
     kind: write · POST /api/agenda/dismiss on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'POST', f'/api/agenda/dismiss',
+    return _http.call(APPS['helm'], 'helm', 'POST', '/api/agenda/dismiss',
                       params={}, body={'ref': ref, 'source': source})
 
 
@@ -360,7 +360,7 @@ def helm_undismiss(ref: str, source: str):
 
     kind: write · POST /api/agenda/undismiss on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'POST', f'/api/agenda/undismiss',
+    return _http.call(APPS['helm'], 'helm', 'POST', '/api/agenda/undismiss',
                       params={}, body={'ref': ref, 'source': source})
 
 
@@ -372,7 +372,7 @@ def helm_decisions():
 
     kind: read · GET /api/decisions on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'GET', f'/api/decisions',
+    return _http.call(APPS['helm'], 'helm', 'GET', '/api/decisions',
                       params={}, body=None)
 
 
@@ -396,7 +396,7 @@ def helm_plan_week(d: str | None = None):
 
     kind: read · GET /api/plan/week on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'GET', f'/api/plan/week',
+    return _http.call(APPS['helm'], 'helm', 'GET', '/api/plan/week',
                       params={'d': d}, body=None)
 
 
@@ -420,7 +420,7 @@ def helm_place(date: str, title: str, kind: str | None = 'free', ref: str | None
 
     kind: write · POST /api/plan/placements on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'POST', f'/api/plan/placements',
+    return _http.call(APPS['helm'], 'helm', 'POST', '/api/plan/placements',
                       params={}, body={'date': date, 'kind': kind, 'ref': ref, 'slot': slot, 'source': source, 'title': title})
 
 
@@ -444,7 +444,7 @@ def helm_journal_today():
 
     kind: read · GET /api/journal/today on helm
     """
-    return _http.call(APPS['helm'], 'helm', 'GET', f'/api/journal/today',
+    return _http.call(APPS['helm'], 'helm', 'GET', '/api/journal/today',
                       params={}, body=None)
 
 
@@ -456,7 +456,7 @@ def mc_apps():
 
     kind: read · GET /api/apps on mission-control
     """
-    return _http.call(APPS['mission-control'], 'mission-control', 'GET', f'/api/apps',
+    return _http.call(APPS['mission-control'], 'mission-control', 'GET', '/api/apps',
                       params={}, body=None)
 
 
@@ -516,7 +516,7 @@ def mc_jobs():
 
     kind: read · GET /api/jobs on mission-control
     """
-    return _http.call(APPS['mission-control'], 'mission-control', 'GET', f'/api/jobs',
+    return _http.call(APPS['mission-control'], 'mission-control', 'GET', '/api/jobs',
                       params={}, body=None)
 
 
@@ -528,7 +528,7 @@ def mc_system():
 
     kind: read · GET /api/system on mission-control
     """
-    return _http.call(APPS['mission-control'], 'mission-control', 'GET', f'/api/system',
+    return _http.call(APPS['mission-control'], 'mission-control', 'GET', '/api/system',
                       params={}, body=None)
 
 
@@ -540,7 +540,7 @@ def mc_models():
 
     kind: read · GET /api/ollama on mission-control
     """
-    return _http.call(APPS['mission-control'], 'mission-control', 'GET', f'/api/ollama',
+    return _http.call(APPS['mission-control'], 'mission-control', 'GET', '/api/ollama',
                       params={}, body=None)
 
 
@@ -552,7 +552,7 @@ def mc_health():
 
     kind: read · GET /api/health on mission-control
     """
-    return _http.call(APPS['mission-control'], 'mission-control', 'GET', f'/api/health',
+    return _http.call(APPS['mission-control'], 'mission-control', 'GET', '/api/health',
                       params={}, body=None)
 
 
@@ -564,7 +564,7 @@ def learnhub_documents():
 
     kind: read · GET /api/documents on learnhub
     """
-    return _http.call(APPS['learnhub'], 'learnhub', 'GET', f'/api/documents',
+    return _http.call(APPS['learnhub'], 'learnhub', 'GET', '/api/documents',
                       params={}, body=None)
 
 
@@ -576,7 +576,7 @@ def learnhub_study_debt(days: int | None = 7):
 
     kind: read · GET /api/study-debt on learnhub
     """
-    return _http.call(APPS['learnhub'], 'learnhub', 'GET', f'/api/study-debt',
+    return _http.call(APPS['learnhub'], 'learnhub', 'GET', '/api/study-debt',
                       params={'days': days}, body=None)
 
 
@@ -588,7 +588,7 @@ def learnhub_review_calendar(days: int | None = 60):
 
     kind: read · GET /api/review-calendar on learnhub
     """
-    return _http.call(APPS['learnhub'], 'learnhub', 'GET', f'/api/review-calendar',
+    return _http.call(APPS['learnhub'], 'learnhub', 'GET', '/api/review-calendar',
                       params={'days': days}, body=None)
 
 
@@ -600,7 +600,7 @@ def learnhub_mastery(doc: str | None = None):
 
     kind: read · GET /api/mastery on learnhub
     """
-    return _http.call(APPS['learnhub'], 'learnhub', 'GET', f'/api/mastery',
+    return _http.call(APPS['learnhub'], 'learnhub', 'GET', '/api/mastery',
                       params={'doc': doc}, body=None)
 
 
@@ -612,7 +612,7 @@ def learnhub_health():
 
     kind: read · GET /health on learnhub
     """
-    return _http.call(APPS['learnhub'], 'learnhub', 'GET', f'/health',
+    return _http.call(APPS['learnhub'], 'learnhub', 'GET', '/health',
                       params={}, body=None)
 
 
